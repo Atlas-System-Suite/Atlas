@@ -1,0 +1,13 @@
+site_name: Atlas Documentation
+site_description: Public documentation for the Atlas Personal Operating System framework.
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Getting Started: getting-started/
+  - Architecture: architecture/
+  - SDK: sdk/
+  - Providers: providers/
+  - Modules: modules/
+  - Tutorials: tutorials/
+  - Reference: reference/
