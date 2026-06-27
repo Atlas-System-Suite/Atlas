@@ -1,0 +1,39 @@
+# Master Atlas Manifest
+version: "0.1.0"
+runtime_version: "0.1.0"
+sdk_version: "0.1.0"
+migration_version: 1
+enabled_features:
+  - core
+  - ai
+  - modules
+  - providers
+supported_providers:
+  storage: [sqlite, postgres, supabase, google-sheets, mongodb, csv, json, atlas-cloud]
+  ai: [openai, anthropic, local]
+  auth: [local, oauth]
+  notifications: [email, webhook]
+  calendar: [ics, google]
+  search: [local, vector]
+  backup: [local, cloud]
+  sync: [local, cloud]
+available_modules:
+  - health
+  - finance
+  - reading
+  - journal
+  - college
+  - projects
+  - knowledge
+  - calendar
+  - nutrition
+  - habits
+  - developer
+  - robotics
+compatible_apps:
+  - lifeos
+  - web
+  - desktop
+  - mobile
+  - cli
+  - server
