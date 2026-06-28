@@ -31,6 +31,7 @@ class ImportDefinition:
 class ExportDefinition:
     capability_name: str
     version: str
+    precedence: int = 0
 
 @dataclass(frozen=True)
 class WorkerManifest:
@@ -150,7 +151,8 @@ class ManifestLoader:
             for exp in data.get("exports", {}).get("capabilities", []):
                 exports.append(ExportDefinition(
                     capability_name=exp.get("name", ""),
-                    version=exp.get("version", "")
+                    version=exp.get("version", ""),
+                    precedence=exp.get("precedence", 0)
                 ))
 
             manifest = WorkerManifest(

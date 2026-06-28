@@ -62,6 +62,24 @@ class IllegalStateTransitionError(AtlasError):
         super().__init__(code="ERR_ILLEGAL_STATE_TRANSITION", severity=Severity.FATAL, message=message, context=context or {})
 
 
+class AmbiguousResolutionError(AtlasError):
+    """Raised when multiple providers satisfy a capability with equal precedence."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_AMBIGUOUS_RESOLUTION", severity=Severity.FATAL, message=message, context=context or {})
+
+
+class CircularDependencyError(AtlasError):
+    """Raised when a capability resolution cycle is detected."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_CIRCULAR_DEPENDENCY", severity=Severity.FATAL, message=message, context=context or {})
+
+
+class ResolutionFailedError(AtlasError):
+    """Raised when a required capability cannot be resolved."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_RESOLUTION_FAILED", severity=Severity.FATAL, message=message, context=context or {})
+
+
 
 # ---------------------------------------------------------
 # Result Type (Rust-style error boundaries)
