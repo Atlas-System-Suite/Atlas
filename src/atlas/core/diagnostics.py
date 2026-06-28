@@ -56,6 +56,13 @@ class LookupError(AtlasError):
         super().__init__(code="ERR_LOOKUP_FAILED", severity=Severity.RECOVERABLE, message=message, context=context or {})
 
 
+class IllegalStateTransitionError(AtlasError):
+    """Raised when a Worker attempts an invalid lifecycle transition."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_ILLEGAL_STATE_TRANSITION", severity=Severity.FATAL, message=message, context=context or {})
+
+
+
 # ---------------------------------------------------------
 # Result Type (Rust-style error boundaries)
 # ---------------------------------------------------------
