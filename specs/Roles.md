@@ -13,7 +13,7 @@ Roles are primarily consumed by:
 
 ## Common Roles
 
-- `manager`: A Worker that orchestrates other Workers (e.g., LifeOS, StudentOS). Managers exist primarily for organization and Solon tooling.
+- `manager`: A Worker that orchestrates other Workers (e.g., Life, Scholar). Managers exist primarily for organization and Solon tooling.
 - `database`: A Worker providing persistent data storage (e.g., SQLite, Postgres).
 - `storage`: A Worker providing object or file storage.
 - `cache`: A Worker providing ephemeral key-value storage.

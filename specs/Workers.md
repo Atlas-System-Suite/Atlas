@@ -10,7 +10,7 @@ Everything executable is a Worker. There is NO architectural distinction between
 - Journal (Stateful application feature)
 - Calendar (Stateful application feature)
 - Task Manager
-- LifeOS (Manager)
+- Life (Manager)
 
 ## Core Responsibilities
 Atlas coordinates; **Workers own**.

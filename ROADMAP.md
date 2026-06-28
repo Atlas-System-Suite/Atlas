@@ -1,6 +1,6 @@
 # Atlas Roadmap
 
-Atlas development is structured by framework milestones, not programming language choices.
+Atlas development is structured by platform milestones, not programming language choices.
 
 ## Phase 0: Architecture Freeze (Complete)
 

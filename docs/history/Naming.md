@@ -17,6 +17,6 @@ Originally, the declarative blueprints for Capabilities were called "Rulesets". 
 *Note: During one specific design session, Models were briefly referred to as **Hookers** because they "hooked" Workers into standardized behavior. This name was retired almost immediately for obvious linguistic reasons, but the joke survives as internal lore.*
 
 ## Manager (from Primitive to Role)
-Early designs treated a "Manager" (like LifeOS or StudentOS) as a special runtime primitive that sat above Applications. This introduced unnecessary complexity into the Runtime.
+Early designs treated a "Manager" (like Life or Scholar) as a special runtime primitive that sat above Applications. This introduced unnecessary complexity into the Runtime.
 
 The Runtime was simplified. A Manager is now simply a normal Worker that happens to have the metadata Role `manager`. It orchestrates other Workers using standard Capability imports, removing the need for the Runtime to treat it uniquely.

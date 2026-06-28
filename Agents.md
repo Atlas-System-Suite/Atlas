@@ -34,9 +34,9 @@ Implementation
 
 # Mission
 
-Atlas is a modular framework for building Personal Operating Systems.
+Atlas is a modular software platform for building Personal Operating Systems.
 
-The first implementation is LifeOS.
+The first implementation is Life.
 
 Your responsibility is **not to merely generate code.**
 
@@ -56,13 +56,13 @@ Every decision should improve:
 
 Atlas is:
 
-Framework First
+Platform First
 
-Application Second
+Product Second
 
 Features Third
 
-Never optimize a feature at the expense of the framework.
+Never optimize a feature at the expense of the software platform.
 
 If a specification can be implemented in 200 lines, do not implement it in 2,000.
 

@@ -1,129 +1,111 @@
 # Atlas
 
-> **Atlas is a modular framework for building Personal Operating Systems.**
+> **Atlas introduces a universal execution model for software through Workers.**
 
-LifeOS is the first implementation built using Atlas.
+Atlas is a software platform that sits precisely between programming languages and user products. Where programming languages express computation, Atlas expresses software architecture.
+
+---
+
+## Why Atlas Exists
+
+Large applications inevitably become difficult to manage because:
+- Everything becomes tightly coupled.
+- Plugin systems are bolted on as afterthoughts and lack consistency.
+- Testing in isolation becomes nearly impossible.
+- Components aren't easily reusable across different products.
+- Communication between features becomes ad-hoc and untrackable.
+
+Atlas solves this by introducing **Workers** and **Models**. By forcing all executable code into strictly bound Workers, Atlas guarantees absolute modularity.
+
+---
+
+## Philosophy
+
+* **Workers own.** (They own state, persistence, and execution).
+* **Atlas coordinates.** (It handles discovery, lifecycle, and session binding).
+* **Models define.** (They provide declarative, tool-independent specifications).
+* **Roles describe.** (They tag Workers for tooling, without changing runtime behavior).
+* **Tooling teaches.** (Solon enforces the architecture).
+
+---
+
+## Core Concepts
+
+- **Worker:** The ONLY executable primitive in Atlas. Everything, from a database driver to a UI dashboard, is a Worker.
+- **Model:** The declarative, tool-independent blueprint that a Worker implements. Models define schemas, capabilities, and interfaces.
+- **Role:** A metadata tag (e.g., `database`, `manager`, `ai`) that describes a Worker to the Studio Suite.
+- **Capability:** A specific piece of functionality defined by a Model and exported/imported by a Worker.
+- **Manager:** A standard Worker that happens to have the `manager` Role. Managers orchestrate other Workers to form a product.
+- **Widget:** A UI component exported by a Worker as a standard Capability.
+- **Registry:** The runtime metadata store containing discovered Workers, Models, and Roles.
+- **Session:** The active binding negotiated by Atlas between a Worker requesting a Capability and a Worker providing it.
+- **Communication:** Workers communicate *directly* over the Data Plane using the Session binding. Atlas does not route messages.
+
+---
+
+## Architecture
+
+```text
+Programming Language
+         ↓
+   Atlas Runtime
+         ↓
+      Workers
+         ↓
+      Products
+```
+
+---
+
+## Atlas Studio Suite
+
+The Studio Suite is the official developer toolkit for the Atlas ecosystem. 
+
+### Miron
+The runtime console. Equivalent to Task Manager + Docker Desktop + Runtime Inspector. Used to inspect running Workers, monitor communication, view the Registry, and manage topology.
+
+### Solon
+The build system and validator. Solon consumes Models to generate tests, SDKs, documentation, and mocks. It validates architecture without needing to boot the Runtime.
+
+### Varsity
+The learning platform. Provides project scaffolding, interactive tutorials, project review, and acts as an architecture mentor recommending best practices.
+
+---
+
+## Why Atlas is Different
+
+Atlas combines proven ideas from distinct domains into one coherent platform:
+- **Microkernels:** The Runtime is kept incredibly small, delegating everything to Workers.
+- **Contract-First Development:** Models define communication completely independently of implementation.
+- **Plugin Systems & Component Systems:** Behavior is defined by composition.
+- **Tool-Driven Architecture:** The ecosystem relies heavily on Solon to validate and scaffold.
+
+---
+
+## Roadmap
+
+```text
+Architecture
+      ↓
+   Runtime
+      ↓
+ Studio Suite
+      ↓
+ Marketplace
+      ↓
+Multi-language Runtime
+```
+
+---
 
 ## Fun Fact
 
-During Atlas' design, the Model system almost had a very different name.
+Every project accumulates a few stories.
 
-For roughly one design session it was internally called **Hookers**, because they "hooked" Workers to standardized behavior.
+During Atlas' design, the Model system almost had a very different name. For roughly one design session it was internally called **Hookers**, because they "hooked" Workers to standardized behavior.
 
 That idea survived exactly until someone pointed out what "hooker" usually means in English.
 
-The name was immediately retired.
+The name was immediately retired. Models were born.
 
-Models were born.
-
-The joke, however, became part of Atlas history.
-
----
-
-# What is Atlas?
-
-Atlas is not a productivity app.
-Atlas is not a habit tracker.
-Atlas is not a Google Sheets template.
-
-Atlas is a framework that allows developers to build highly customizable personal operating systems.
-
-An Atlas implementation can help users manage their health, finances, learning, projects, schedules, and personal knowledge while remaining completely modular and extensible.
-
----
-
-# Philosophy
-
-Atlas follows a few core principles:
-
-* **Atlas coordinates. Workers own.**
-* **Atlas owns execution. Workers own business state.**
-* **Atlas owns lifecycle. Workers own communication.**
-* **Atlas owns discovery. Workers own persistence.**
-* The Runtime should be as small as possible. Workers should be as smart as possible.
-* Favor tooling (Solon) over runtime magic.
-* Favor metadata over runtime logic.
-
----
-
-# Core Concepts
-
-## Workers
-**Worker** is the ONLY executable primitive in Atlas. There is no architectural distinction between an "application", a "provider", or a "module". A Worker can be a database, a UI widget, an AI integration, or a full dashboard.
-
-## Models
-**Models** are the ideal, tool-independent specifications that Workers implement. Models are declarative blueprints that define what interfaces, schemas, and capabilities a Worker should provide or consume.
-
-## Solon
-**Solon** is the developer toolchain. It consumes Models to validate Workers, generate tests, and scaffold SDKs. Solon guarantees consistency without bloating the Runtime.
-
-## Atlas Core (The Control Plane)
-The Runtime that powers the framework. It handles Discovery, Lifecycle Management, and Session Binding. It explicitly does **not** route messages or store data.
-
-## Roles
-Metadata tags attached to Workers. Roles are consumed by tooling (Solon) and documentation, but they **do not change runtime execution**. Atlas treats all Workers equally. 
-
-Some predefined roles include:
-- `manager`: Orchestrates other Workers (e.g., LifeOS, StudentOS).
-- `database`: Provides persistent data storage (e.g., SQLite, Postgres).
-- `storage`: Provides object or file storage.
-- `ai`: Provides language model or inference capabilities.
-- `widget`: Primarily focused on exporting UI capabilities.
-- `network`: Handles external communication (e.g., HTTP clients, webhooks).
-
----
-
-# Repository Structure
-
-`/specs`
-Engineering specifications. The absolute source of truth for the architecture.
-
-`/docs`
-Architectural deep-dives, historical context, and MKDocs site files.
-
-`/src`
-The implementation codebase (Control Plane, Solon Toolchain, etc.).
-
----
-
-# Current Goal
-
-Validate the Atlas Architecture by building the Control Plane (Core).
-
-Once Atlas Core is stable, build LifeOS as the reference Manager Worker.
-
----
-
-# Development Philosophy
-
-Architecture First.
-
-Implementation Second.
-
-Optimization Last.
-
-Every implementation should be derived from the specifications contained inside `/specs`.
-
-Never implement features before they are architecturally defined.
-
----
-
-# Long-Term Vision
-
-Atlas should eventually support:
-
-* Local desktop applications
-* Web applications
-* Mobile applications
-* Self-hosted deployments
-* Managed cloud deployments
-* Multiple storage providers
-* Multiple AI providers
-* Third-party extensions
-* Community marketplaces
-
----
-
-# License
-
-TBD
+The joke, however, remains a part of Atlas history.

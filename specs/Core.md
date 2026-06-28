@@ -22,4 +22,4 @@ Core **MUST NOT**:
 - Route Data Plane messages (Events are routed directly between bound Workers).
 - Implement specific Capabilities.
 
-Core is entirely Framework Agnostic, meaning it does not care if a Worker is a database, an AI model, or a UI widget. It treats all Workers identically.
+Core is entirely Platform Agnostic, meaning it does not care if a Worker is a database, an AI model, or a UI widget. It treats all Workers identically.
