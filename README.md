@@ -61,7 +61,15 @@ Atlas follows a few core principles:
 The Runtime that powers the framework. It handles Discovery, Lifecycle Management, and Session Binding. It explicitly does **not** route messages or store data.
 
 ## Roles
-Metadata tags attached to Workers (e.g., `manager`, `database`, `storage`, `ui`). Roles are consumed by tooling and documentation, but do not change runtime execution.
+Metadata tags attached to Workers. Roles are consumed by tooling (Solon) and documentation, but they **do not change runtime execution**. Atlas treats all Workers equally. 
+
+Some predefined roles include:
+- `manager`: Orchestrates other Workers (e.g., LifeOS, StudentOS).
+- `database`: Provides persistent data storage (e.g., SQLite, Postgres).
+- `storage`: Provides object or file storage.
+- `ai`: Provides language model or inference capabilities.
+- `widget`: Primarily focused on exporting UI capabilities.
+- `network`: Handles external communication (e.g., HTTP clients, webhooks).
 
 ---
 
