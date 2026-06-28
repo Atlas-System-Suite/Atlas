@@ -10,13 +10,21 @@ Version: 0.1
 
 Capabilities define **what Atlas can do**.
 
-A Capability is an abstract service provided by Atlas.
+A Capability is a **runtime service identity** — a named, versioned service that the Capability Registry discovers, resolves, and injects.
 
-Capabilities do not contain implementation.
+Capabilities are not code contracts. Code contracts are defined by Protocols (see Protocols.md).
 
-They only define behavior.
+Capabilities are not implementations. Implementations are provided by Providers (see Providers.md).
 
-Providers implement Capabilities.
+## Relationship to Protocols and Providers
+
+Capability (runtime service identity) → references → Protocol (code contract)
+
+Provider (implementation) → satisfies → Protocol
+
+Provider → registers for → Capability
+
+See ADR-002 for the rationale behind this separation.
 
 Modules consume Capabilities.
 

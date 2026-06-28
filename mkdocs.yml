@@ -1,0 +1,34 @@
+site_name: Atlas Framework
+site_description: A modular framework for building Personal Operating Systems.
+repo_url: https://github.com/your-org/atlas
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Protocols: protocols.md
+  - Capabilities: capabilities.md
+  - Providers: providers.md
+  - Modules: modules.md
+  - Core: core.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences

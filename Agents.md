@@ -64,6 +64,12 @@ Features Third
 
 Never optimize a feature at the expense of the framework.
 
+If a specification can be implemented in 200 lines, do not implement it in 2,000.
+
+Favor simple, obvious implementations that satisfy the architecture.
+
+Optimize only after the architecture has been validated by real applications.
+
 ---
 
 # Golden Rules
@@ -405,6 +411,39 @@ Multiple storage providers
 Without changing Atlas Core.
 
 Every implementation should move Atlas closer to this vision.
+
+---
+
+# Implementation Mindset
+
+Do not build Atlas.
+
+Build the smallest implementation that proves the architecture works.
+
+For each capability, prove:
+
+Module → Capability → Protocol → Provider → External System → Success.
+
+Then stop. Move to the next capability.
+
+Perfection comes from iteration, not from the first implementation.
+
+---
+
+# Definition of Done
+
+Every feature is complete only when:
+
+* Code compiles and runs.
+* Tests pass.
+* Documentation exists.
+* Specification is updated (if changed).
+* Changelog is updated.
+* Example exists.
+* CI passes.
+* No architecture violation.
+
+Incomplete work should not be merged.
 
 ---
 

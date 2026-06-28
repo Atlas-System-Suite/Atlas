@@ -8,21 +8,33 @@ Version: 0.1
 
 # Purpose
 
-Interfaces define the contracts that Atlas components must implement.
+Interfaces define the **code contracts** that Atlas components must implement.
+
+In Atlas, Interfaces are implemented as Python `typing.Protocol` classes (structural subtyping).
 
 They provide consistency across the platform.
 
 Interfaces are implementation-independent.
 
+For concrete Protocol definitions, see Protocols.md.
+
+## Relationship to Capabilities
+
+Interfaces (Protocols) are the code contracts. Capabilities are runtime service identities.
+
+A Capability references one or more Protocols. A Provider satisfies Protocols and registers for Capabilities.
+
+See ADR-002 for the rationale behind this separation.
+
 ---
 
 # Philosophy
 
-Atlas depends on Interfaces.
+Atlas depends on Protocols.
 
 Not implementations.
 
-Every interchangeable component should implement an Interface.
+Every interchangeable component should satisfy a Protocol.
 
 ---
 
