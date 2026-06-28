@@ -43,6 +43,16 @@ nav:
     - System: stdlib/system.md
     - UI & Media: stdlib/ui-media.md
     - AI & Hardware: stdlib/ai-hardware.md
+  - Standard Models (v1):
+    - Catalog Overview: models/index.md
+    - Core Models: models/core.md
+    - Storage Models: models/storage.md
+    - Networking Models: models/networking.md
+    - Runtime Models: models/runtime.md
+    - UI Models: models/ui.md
+    - Media Models: models/media.md
+    - AI Models: models/ai.md
+    - Hardware Models: models/hardware.md
   - Architecture (v1.0):
     - Execution Model: architecture/execution-model.md
     - Core Runtime: specs/Core.md
