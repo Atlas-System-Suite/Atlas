@@ -78,12 +78,12 @@ WORKER_TEST = textwrap.dedent('''\
     from {module_path} import {class_name}
 
 
-    def test_{name}_exports_capability():
+    def test_{safe_name}_exports_capability():
         worker = {class_name}()
         assert_capability_exported(worker, "{namespace}.{name}.hello")
 
 
-    def test_{name}_hello():
+    def test_{safe_name}_hello():
         runtime = MockRuntime()
         runtime.register({class_name}, "{namespace}.{name}")
         result = runtime.invoke("{namespace}.{name}", "hello", {{"name": "Atlas"}})
@@ -211,13 +211,13 @@ ADAPTER_TEST = textwrap.dedent('''\
     from {module_path} import {class_name}
 
 
-    def test_{name}_translates():
+    def test_{safe_name}_translates():
         adapter = {class_name}()
         result = adapter.convert(b"hello")
         assert result == b"hello"
 
 
-    def test_{name}_has_translations():
+    def test_{safe_name}_has_translations():
         adapter = {class_name}()
         translations = adapter.get_translations()
         assert len(translations) >= 1
@@ -305,6 +305,7 @@ class ProjectGenerator:
         
         # We also need module_path for Python imports
         config["module_path"] = "worker" if config["type"] == "worker" else "model" if config["type"] == "model" else "adapter"
+        config["safe_name"] = config["name"].replace("-", "_")
         
         if config["language"].lower() != "python":
             raise NotImplementedError(f"Language support for '{config['language']}' is coming soon! (Atlas currently focuses on its Python SDK).")

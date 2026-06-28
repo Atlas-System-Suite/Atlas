@@ -40,11 +40,16 @@ def handle_new(args):
         
         description = Prompt.ask("Enter a short description", default=f"A new Atlas {project_type}")
         
-        language = Prompt.ask(
+        language_choice = Prompt.ask(
             "Select the implementation language", 
-            choices=["python", "rust", "cpp", "go", "zig"], 
+            choices=["python", "rust", "cpp", "go", "zig", "custom"], 
             default="python"
         )
+        
+        if language_choice == "custom":
+            language = Prompt.ask("Enter custom language name")
+        else:
+            language = language_choice
         
         console.print("\n[bold]Configuration Overview:[/bold]")
         console.print(f"  [cyan]Type:[/cyan]       {project_type}")
