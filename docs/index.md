@@ -43,6 +43,8 @@ Atlas solves this by introducing **Workers** and **Models**. By forcing all exec
 - **Registry:** Stores runtime facts. Split into the **Global Registry** (macro-state) and **Room Registry** (execution cache).
 - **Communication:** Workers communicate by sending Headers. Atlas handles the Transport and Translation layers to guarantee language neutrality.
 
+> 📖 **Read the deep dive:** [The Definitive Guide to Atlas Primitives](architecture/primitives.md)
+
 ---
 
 ## Architecture

@@ -6,9 +6,20 @@ The `atlas` CLI is the official developer interface for the Atlas Software Platf
 
 ## Commands
 
-### `atlas new <type> <name>`
+### `atlas new`
 
-Scaffold a new Atlas project.
+Launch the interactive project creation wizard. The wizard guides you through selecting the artifact type, project name, namespace, version, description, and implementation language.
+
+```bash
+atlas new
+```
+
+**Fast Path:**
+You can bypass the wizard by providing the type and name as arguments:
+
+```bash
+atlas new <type> <name>
+```
 
 | Type | Description |
 |------|-------------|
