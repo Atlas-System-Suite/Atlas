@@ -44,12 +44,12 @@ def test_deregister_listener():
     transport = InMemoryTransport()
     transport.register_listener("workerB", lambda p: None)
     
-    res = transport.send(TransportPayload("A", "B", b"test"))
+    res = transport.send(TransportPayload("A", "workerB", b"test"))
     assert res.is_ok()
     
     transport.deregister_listener("workerB")
     
-    res = transport.send(TransportPayload("A", "B", b"test"))
+    res = transport.send(TransportPayload("A", "workerB", b"test"))
     assert res.is_err()
     
     transport.shutdown()
