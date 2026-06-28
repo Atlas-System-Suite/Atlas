@@ -136,7 +136,21 @@ class GlobalRegistry:
     # Accessors (Read Locks)
     # ---------------------------------------------------------
 
-    def get_worker(self, worker_id: str) -> Option[WorkerInstance]: # using python Optional typing concept
+    def get_metrics(self, worker_id: str) -> Optional[WorkerMetrics]:
+        self._lock.acquire_read()
+        try:
+            return self._metrics.get(worker_id)
+        finally:
+            self._lock.release_read()
+            
+    def get_workers_by_capability(self, capability: str) -> List[str]:
+        self._lock.acquire_read()
+        try:
+            return list(self._capabilities_index.get(capability, []))
+        finally:
+            self._lock.release_read()
+
+    def get_worker(self, worker_id: str) -> Optional[WorkerInstance]: # using python Optional typing concept
         self._lock.acquire_read()
         try:
             return self._workers.get(worker_id)

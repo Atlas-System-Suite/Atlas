@@ -101,6 +101,16 @@ class TranslationCycleError(AtlasError):
     def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
         super().__init__(code="ERR_TRANSLATION_CYCLE", severity=Severity.WARNING, message=message, context=context or {})
 
+class SessionStateError(AtlasError):
+    """Raised when an illegal session lifecycle transition is attempted."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_SESSION_STATE", severity=Severity.RECOVERABLE, message=message, context=context or {})
+
+class SessionNegotiationError(AtlasError):
+    """Raised when Session negotiation fails (e.g. incompatible formats, capabilities)."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_SESSION_NEGOTIATION", severity=Severity.RECOVERABLE, message=message, context=context or {})
+
 
 
 # ---------------------------------------------------------

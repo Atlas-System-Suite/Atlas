@@ -17,8 +17,9 @@ class ExecutionPolicy:
 
 @dataclass(frozen=True)
 class CommunicationPolicy:
-    transports: List[str]
-    serialization: List[str]
+    required_capabilities: List[str]
+    optional_capabilities: List[str]
+    default_format: str = "binary"
 
 @dataclass(frozen=True)
 class ImportDefinition:
@@ -142,8 +143,9 @@ class ManifestLoader:
         try:
             execution = ExecutionPolicy(policy=exec_data.get("policy", "singleton"))
             communication = CommunicationPolicy(
-                transports=comm_data.get("transports", []),
-                serialization=comm_data.get("serialization", [])
+                required_capabilities=comm_data.get("requires", []),
+                optional_capabilities=comm_data.get("optional", []),
+                default_format=comm_data.get("default_format", "binary")
             )
 
             imports = []

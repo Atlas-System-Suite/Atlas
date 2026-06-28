@@ -50,6 +50,7 @@ nav:
     - Phase 1.1 - Diagnostics: specs/implementation/phase-1.1/Phase1-Diagnostics.md
     - Phase 1.3 - Transport Layer: specs/implementation/phase-1.3/Phase1-TransportLayer.md
     - Phase 1.3 - Translation Layer: specs/implementation/phase-1.3/Phase1-TranslationLayer.md
+    - Phase 1.3 - Session Layer: specs/implementation/phase-1.3/Phase1-SessionLayer.md
   - History & ADRs:
     - Naming Evolution: history/naming.md
 
