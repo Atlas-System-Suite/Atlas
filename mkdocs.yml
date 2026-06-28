@@ -30,6 +30,8 @@ nav:
     - Philosophy: philosophy/philosophy.md
     - Vision: philosophy/vision.md
     - Studio Suite: studio-suite.md
+  - Guides:
+    - Building Workers & Roles: guides/building-workers.md
   - Architecture (v1.0):
     - Execution Model: architecture/execution-model.md
     - Core Runtime: specs/Core.md
