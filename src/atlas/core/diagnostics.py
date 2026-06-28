@@ -126,6 +126,11 @@ class RoomLimitExceededError(AtlasError):
     def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
         super().__init__(code="ERR_ROOM_LIMIT", severity=Severity.RECOVERABLE, message=message, context=context or {})
 
+class RuntimeStateError(AtlasError):
+    """Raised when an illegal runtime lifecycle operation is attempted (e.g., booting twice)."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_RUNTIME_STATE", severity=Severity.FATAL, message=message, context=context or {})
+
 
 
 # ---------------------------------------------------------

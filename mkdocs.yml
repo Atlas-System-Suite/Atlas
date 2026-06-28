@@ -53,6 +53,7 @@ nav:
     - Phase 1.3 - Session Layer: specs/implementation/phase-1.3/Phase1-SessionLayer.md
     - Phase 1.3 - Invocation Engine: specs/implementation/phase-1.3/Phase1-InvocationEngine.md
     - Phase 1.3 - Room Manager: specs/implementation/phase-1.3/Phase1-RoomManager.md
+    - Phase 1.3 - Runtime Core: specs/implementation/phase-1.3/Phase1-RuntimeCore.md
   - History & ADRs:
     - Naming Evolution: history/naming.md
 
