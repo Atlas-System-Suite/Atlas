@@ -80,6 +80,18 @@ class ResolutionFailedError(AtlasError):
         super().__init__(code="ERR_RESOLUTION_FAILED", severity=Severity.FATAL, message=message, context=context or {})
 
 
+class PlanningFailedError(AtlasError):
+    """Raised when the Execution Planner fails to generate a valid plan."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_PLANNING_FAILED", severity=Severity.FATAL, message=message, context=context or {})
+
+
+class InvalidTopologyError(AtlasError):
+    """Raised when the Execution Planner encounters an impossible startup order."""
+    def __init__(self, message: str, context: Optional[Dict[str, str]] = None):
+        super().__init__(code="ERR_INVALID_TOPOLOGY", severity=Severity.FATAL, message=message, context=context or {})
+
+
 
 # ---------------------------------------------------------
 # Result Type (Rust-style error boundaries)
