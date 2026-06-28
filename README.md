@@ -1,6 +1,6 @@
 # Atlas
 
-![Atlas Banner](docs/assets/logo_10.png)
+![Atlas Hero Logo](docs/assets/logo_11.png)
 
 **Documentation:** [https://aadit-garg.github.io/Atlas/](https://aadit-garg.github.io/Atlas/)
 > **Atlas introduces a universal execution model for software through Workers.**

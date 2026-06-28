@@ -1,6 +1,6 @@
 # Atlas Software Platform
 
-![Atlas Banner](assets/logo_10.png)
+![Atlas Hero Logo](assets/logo_11.png)
 
 > **Atlas introduces a universal execution model for software through Workers.**
 
