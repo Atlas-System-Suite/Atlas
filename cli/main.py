@@ -36,6 +36,12 @@ def create_parser() -> argparse.ArgumentParser:
     )
     new_parser.add_argument("name", nargs="?", help="Name of the project")
     new_parser.add_argument(
+        "--namespace", default="atlas", help="Identifier namespace (default: atlas)"
+    )
+    new_parser.add_argument(
+        "--language", default="python", help="Implementation language (default: python)"
+    )
+    new_parser.add_argument(
         "--template", default=None, help="Template variant to use"
     )
 

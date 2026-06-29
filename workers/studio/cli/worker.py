@@ -311,9 +311,17 @@ class StudioCliWorker:
                         else:
                             console.print(f"[red]Worker '{worker_id}' not found.[/red]")
                 elif choice == "scaffold":
-                    console.print("\n[cyan]Tip: You can run `atlas new` to launch the scaffolding wizard.[/cyan]")
-                    import subprocess
-                    subprocess.run([sys.executable, "-m", "cli.main", "new"])
+                    console.print(Panel("✨ [bold cyan]Scaffold New Project[/bold cyan]", border_style="cyan"))
+                    from cli.commands.new import handle_new
+                    
+                    class ScaffoldArgs:
+                        type = None
+                        name = None
+                        namespace = "atlas"
+                        language = "python"
+                        template = None
+                    
+                    handle_new(ScaffoldArgs())
                 elif choice == "settings":
                     self.handle_settings()
                 
