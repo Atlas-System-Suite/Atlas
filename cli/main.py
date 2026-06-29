@@ -101,11 +101,7 @@ def main():
         from rich.text import Text
         
         console = Console()
-        logo = (
-            "\n[bold cyan]    ▲[/bold cyan]\n"
-            "[bold cyan]   ▲ ▲[/bold cyan]    [bold white]ATLAS[/bold white]\n"
-            "[bold cyan]  ▲ ▲ ▲[/bold cyan]   [dim white]The Universal Software Architecture Platform[/dim white]\n"
-        )
+        logo = "\n[bold white]ATLAS[/bold white]\n[dim white]The Universal Software Architecture Platform[/dim white]\n"
         
         # Override help formatting
         if len(sys.argv) == 1 or "-h" in sys.argv or "--help" in sys.argv:

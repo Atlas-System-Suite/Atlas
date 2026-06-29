@@ -1,0 +1,133 @@
+# State & Standard Models
+
+A Worker without memory is just a function. But in Atlas, how a Worker remembers is just as important as what it remembers. We do not couple logic to infrastructure, and we do not couple data to language-specific runtimes.
+
+<div class="atlas-narrative" markdown="1">
+
+Right now, our `NotesUiWorker` stores data in a Python list. If the node crashes or the process restarts, the memory is wiped and the notes vanish. We need persistence.
+
+In traditional software development, the easiest path to persistence is importing an SQL or MongoDB driver directly into your application code. You write a query, establish a TCP connection to the database, and save the data. 
+
+**Atlas strictly forbids this.**
+
+If your Worker imports an SQL driver, it is now tightly coupled to SQL. It is no longer an isolated, pure business-logic primitive. It requires a network connection to a database to even run its unit tests.
+
+### The Capability Model
+
+Instead of importing a database driver, we ask the **Global Registry** for a generic Storage Capability. 
+
+By demanding `"atlas.core.storage@^1.0.0"`, our UI worker is making a declarative statement: *"I do not care if the underlying storage is Postgres, Redis, a local JSON file, or an S3 bucket. I just need something that can hold bytes."*
+
+This is the power of the Atlas runtime. The Runtime will dynamically find a Worker that provides that capability, negotiate a secure Session tunnel between them, and allow them to pass messages.
+
+But wait. If a Python UI Worker is talking to a Rust Storage Worker over a ZeroMQ tunnel, how do they understand each other's data structures? A Python dictionary is not a Rust struct.
+
+---
+
+## Enter: Standard Models
+
+In Atlas, all inter-Worker communication must adhere to **Standard Models**. 
+A Model is a declarative, language-agnostic data schema defined in your manifest. It acts as a universal translator. 
+
+When a Worker emits data, the Atlas SDK intercepts the memory object, serializes it into the exact shape defined by the Model, and ships it over the wire. When the receiving Worker catches the payload, its SDK deserializes the payload back into a native language object (like a Go struct or a Python dictionary).
+
+<div class="atlas-svg-container funnel-container" style="position: relative; width: 100%; height: 300px; display: flex; justify-content: center; align-items: center; margin: 3rem 0; background: rgba(15,23,42,0.03); border-radius: 20px; border: 1px solid rgba(15,23,42,0.1); overflow: hidden;">
+  
+  <div style="position: absolute; left: 10%; top: 20px; font-family: monospace; font-weight: bold; color: var(--atlas-red);">Raw Memory (Chaos)</div>
+  <div style="position: absolute; right: 10%; top: 20px; font-family: monospace; font-weight: bold; color: #10b981;">Standard Model (Order)</div>
+
+  <!-- The Funnel Core -->
+  <div class="funnel-core" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100px; height: 200px; background: linear-gradient(90deg, rgba(239, 68, 68, 0.1), rgba(16, 185, 129, 0.1)); border-left: 2px dashed #ef4444; border-right: 2px dashed #10b981; border-radius: 50px;"></div>
+  
+  <!-- Chaotic Input Nodes -->
+  <div class="chaotic-node" style="position: absolute; left: 10%; top: 40%; width: 50px; height: 30px; background: rgba(239, 68, 68, 0.1); border: 2px solid #ef4444; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ef4444;">dict</div>
+  <div class="chaotic-node" style="position: absolute; left: 15%; top: 70%; width: 40px; height: 40px; background: rgba(239, 68, 68, 0.1); border: 2px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ef4444;">{}</div>
+  <div class="chaotic-node" style="position: absolute; left: 5%; top: 20%; width: 60px; height: 20px; background: rgba(239, 68, 68, 0.1); border: 2px solid #ef4444; border-radius: 0px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #ef4444;">json</div>
+
+  <!-- Central Binary Stream -->
+  <div class="binary-stream" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: var(--atlas-navy); font-family: monospace; font-size: 24px; font-weight: bold; letter-spacing: 5px; opacity: 0;">010101</div>
+
+  <!-- Ordered Output Nodes -->
+  <div class="ordered-node" style="position: absolute; right: 10%; top: 30%; width: 80px; height: 40px; background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #10b981; opacity: 0;">Model</div>
+  <div class="ordered-node" style="position: absolute; right: 15%; top: 60%; width: 80px; height: 40px; background: rgba(16, 185, 129, 0.1); border: 2px solid #10b981; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #10b981; opacity: 0;">Model</div>
+
+</div>
+
+### Defining the Schema
+
+Models are defined in the `atlas.yaml` manifest. They use a strict, strongly-typed schema definition language. 
+
+Let's define a Model for our Notes:
+
+```yaml
+kind: model
+id: myapp.models.note
+version: 1.0.0
+
+schema:
+  id: string
+  content: string
+  timestamp: int64
+  tags: list[string]
+```
+
+When you run `atlas build`, Solon (the Atlas compiler) will read this YAML file and auto-generate the native language bindings for every Worker in your workspace. 
+
+For the Python UI Worker, it generates a Pydantic class. For the Rust Storage Worker, it generates a Serde-derived struct.
+
+### Utilizing the Model in Code
+
+Now, let's update our `NotesUiWorker` to use the standard Storage capability, rather than an internal python list.
+
+```python
+from atlas_sdk import WorkerBase, capability, on_invocation, require
+from myapp.models import Note
+
+class NotesUiWorker(WorkerBase):
+    _worker_id = "myapp.notes_ui"
+
+    # We declare that we REQUIRE the core storage capability to function.
+    @require("atlas.core.storage", version="^1.0.0", as_alias="db")
+    def on_init(self):
+        """The Runtime guarantees 'db' is connected before calling this."""
+        pass
+
+    @capability("myapp.notes.add", version="1.0.0")
+    @on_invocation("add")
+    async def add(self, note_text: str) -> str:
+        # We construct the strict auto-generated Model
+        new_note = Note(
+            id=self.generate_id(),
+            content=note_text,
+            timestamp=self.current_time(),
+            tags=[]
+        )
+        
+        # We push the Model across the network boundary
+        # We have NO idea if this is saving to Postgres, Redis, or memory.
+        await self.db.save(new_note)
+        
+        return "Note perfectly saved across the boundary!"
+```
+
+### The Invisible Serialization Engine
+
+What actually happens when `await self.db.save(new_note)` is called?
+
+Because we used the `@require` decorator, the `self.db` attribute is not a database client. It is an **Atlas SDK Capability Proxy**. 
+
+When you invoke `.save()`, the proxy:
+1. Validates that `new_note` strictly matches the `myapp.models.note` schema.
+2. Serializes the Python object into a packed binary format (or JSON).
+3. Pushes the bytes through the ZeroMQ tunnel that the Runtime established during Boot.
+
+The Storage Worker on the other end receives the bytes. Its own SDK validates the payload against the exact same manifest schema, deserializes it into a Rust struct, and passes it to the business logic function.
+
+Neither developer had to write a single line of parsing code. Neither developer had to write an API route. Neither developer had to handle network reconnects.
+
+**Atlas coordinates. Workers own.**
+
+<br>
+<strong><a href="../03-the-manager/" style="color: var(--atlas-red); text-decoration: none; border-bottom: 1px solid var(--atlas-red); padding-bottom: 2px;">Next Chapter: Orchestration & Managers &rarr;</a></strong>
+
+</div>

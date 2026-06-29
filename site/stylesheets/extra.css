@@ -1,0 +1,855 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+/* 
+ * ATLAS EDITORIAL THEME 
+ * Inspiration: higherorderco.com
+ */
+
+:root {
+  /* Paper Background */
+  --md-default-bg-color: #ebe8e2;
+  
+  /* Text Colors */
+  --md-default-fg-color: #334155;
+  --md-default-fg-color--light: #64748b;
+  --md-default-fg-color--lighter: #94a3b8;
+  
+  /* Navy for Headings */
+  --atlas-navy: #0f172a;
+  
+  /* Accent Red */
+  --atlas-red: #d32f2f;
+  --md-primary-fg-color: #d32f2f; 
+  
+  /* Container backgrounds */
+  --md-code-bg-color: #f5f4f1;
+  --atlas-card-bg: #f5f4f1;
+  
+  /* Borders & Shadows */
+  --atlas-border: 1px solid rgba(15, 23, 42, 0.08);
+  --atlas-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  --atlas-radius: 12px;
+}
+
+/* Dark Theme (Slate) Support */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0f172a; /* Deep Navy */
+  --md-default-fg-color: #f1f5f9; /* Slate 100 */
+  --md-default-fg-color--light: #cbd5e1;
+  --md-default-fg-color--lighter: #94a3b8;
+  
+  --atlas-navy: #f8fafc; /* Invert Navy to White for headings */
+  --atlas-red: #ef4444; /* Brighter red for dark mode */
+  --md-primary-fg-color: #ef4444; 
+  
+  --md-code-bg-color: #1e293b; /* Slate 800 */
+  --atlas-card-bg: #1e293b;
+  
+  --atlas-border: 1px solid rgba(255, 255, 255, 0.1);
+  --atlas-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Base Body Styles */
+body {
+  background-color: var(--md-default-bg-color);
+  font-family: 'Inter', sans-serif;
+  color: var(--md-default-fg-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography - Editorial Serif Headings */
+h1, h2, h3, h4, h5, h6, 
+.md-typeset h1, .md-typeset h2, .md-typeset h3,
+.md-nav__title {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  color: var(--atlas-navy) !important;
+  letter-spacing: -0.02em;
+}
+
+/* ==========================================================
+ * FLOATING PILL NAVBAR
+ * ========================================================== */
+
+.md-header {
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 100%;
+  padding-top: 1.5rem;
+}
+
+.md-header__inner {
+  background: var(--atlas-card-bg);
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 50px;
+  padding: 0.5rem 2rem;
+  box-shadow: var(--atlas-shadow);
+  border: var(--atlas-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Make the logo much larger */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 64px !important;
+  width: auto !important;
+}
+
+.md-header__button.md-logo {
+  padding: 0 !important;
+  margin-right: 1.5rem !important;
+}
+
+/* Swap to red logo in dark mode */
+[data-md-color-scheme="slate"] .md-header__button.md-logo img {
+  content: url('../assets/atlas_logo_dark.png');
+}
+
+.md-header[data-md-state="hidden"] {
+  transform: translateY(0);
+}
+
+/* Hide search/repo borders inside the pill */
+.md-search__input { background: transparent !important; }
+
+/* Navigation Tabs Styling */
+.md-tabs { 
+  background: transparent !important; 
+  margin: 1.5rem auto 0 auto !important;
+  width: 100% !important;
+  max-width: 1100px;
+}
+.md-tabs__list {
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: flex-start;
+  gap: 2rem;
+  padding-left: 2rem !important;
+}
+.md-tabs__item {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.md-tabs__link {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  color: var(--md-default-fg-color) !important;
+  opacity: 0.8;
+  padding: 0 !important;
+  margin: 0 !important;
+  transition: opacity 0.2s ease;
+}
+.md-tabs__link:hover, .md-tabs__link--active {
+  opacity: 1;
+  color: var(--atlas-red) !important;
+}
+
+/* Hide the main title in header to save space for tabs */
+.md-header__title { display: none !important; }
+
+/* Adjust main content padding because of absolute header */
+.md-main {
+  padding-top: 2rem !important; /* Back to normal since header is no longer absolute */
+}
+
+/* ==========================================================
+ * HOMEPAGE LAYOUT (HigherOrderCo Vibe)
+ * ========================================================== */
+
+.atlas-hero-container {
+  max-width: 1100px;
+  margin: 0 auto 4rem; /* Removed the top margin since md-main handles it now */
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.atlas-company-label {
+  color: var(--atlas-red);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  text-transform: none;
+}
+
+.atlas-hero-title {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  font-size: 3.8rem !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  color: var(--atlas-navy) !important;
+  margin: 0 0 2rem 0 !important;
+  max-width: 800px;
+}
+
+/* Dual Pathways */
+.atlas-features-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+.atlas-features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+@media (min-width: 768px) {
+  .atlas-features-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.atlas-feature-card {
+  background: var(--atlas-card-bg);
+  border-radius: var(--atlas-radius);
+  padding: 3rem;
+  border: var(--atlas-border);
+  box-shadow: var(--atlas-shadow);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.atlas-feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.atlas-feature-card .subtitle {
+  color: var(--atlas-navy);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.atlas-feature-card h3 {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  font-weight: 700 !important;
+  font-size: 2.5rem !important;
+  margin: 0 0 1.5rem 0 !important;
+  color: var(--atlas-navy) !important;
+}
+
+.atlas-feature-card p {
+  color: var(--md-default-fg-color);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+/* ==========================================================
+ * 6. MERMAID GRAPHS (Architectural / Animated Style)
+ * ========================================================== */
+
+.md-typeset .mermaid {
+  background-color: var(--md-default-bg-color) !important;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.1) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  border-radius: var(--atlas-radius);
+  padding: 4rem 2rem;
+  margin: 4rem 0;
+  border: var(--atlas-border);
+  box-shadow: inset 0 2px 20px rgba(0,0,0,0.02);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+[data-md-color-scheme="slate"] .md-typeset .mermaid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+  box-shadow: inset 0 2px 30px rgba(0,0,0,0.5);
+}
+
+/* Vignette effect over the grid */
+.md-typeset .mermaid::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  box-shadow: inset 0 0 60px var(--md-default-bg-color);
+  pointer-events: none;
+  border-radius: var(--atlas-radius);
+}
+
+.mermaid svg {
+  max-width: 100% !important;
+  z-index: 1; /* Above the vignette */
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05));
+}
+
+/* Nodes */
+.mermaid .node rect, 
+.mermaid .node circle, 
+.mermaid .node polygon {
+  fill: var(--atlas-card-bg) !important;
+  stroke: var(--atlas-navy) !important;
+  stroke-width: 2px !important;
+  rx: 20px !important; 
+  ry: 20px !important;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Floating Animation for Nodes */
+@keyframes floatNode {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0px); }
+}
+
+.mermaid .node {
+  animation: floatNode 6s ease-in-out infinite;
+}
+/* Stagger the animation so they don't float at exactly the same time */
+.mermaid .node:nth-child(even) { animation-delay: -2s; }
+.mermaid .node:nth-child(3n) { animation-delay: -4s; }
+
+.mermaid .node:hover rect, 
+.mermaid .node:hover circle, 
+.mermaid .node:hover polygon {
+  transform: scale(1.05);
+  stroke: var(--atlas-red) !important;
+  stroke-width: 3px !important;
+}
+
+/* Edges */
+.mermaid .edgePath .path {
+  stroke: var(--atlas-navy) !important;
+  stroke-width: 2px !important;
+  stroke-dasharray: 8 4 !important; /* Dotted tech lines */
+}
+
+/* Animated Flow along Edges */
+@keyframes flowEdge {
+  to { stroke-dashoffset: -24; }
+}
+.mermaid .edgePath .path {
+  animation: flowEdge 1.5s linear infinite;
+}
+
+.mermaid .edgeLabel {
+  background-color: var(--md-code-bg-color) !important;
+  color: var(--atlas-navy) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important; /* Pill shaped edge labels */
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Text inside nodes */
+.mermaid .node text {
+  fill: var(--atlas-navy) !important;
+  font-family: 'Inter', sans-serif !important; /* Cleaner than serif for small diagram text */
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================
+ * 7. MICRO-ANIMATIONS
+ * ========================================================== */
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-reveal {
+  animation: slideUpFade 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  opacity: 0;
+}
+
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+
+/* ==========================================================
+ * PEDAGOGICAL ANIMATIONS (PREMIUM)
+ * ========================================================== */
+
+.atlas-teaching-anim {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 3rem auto;
+  max-width: 650px;
+  height: 140px;
+  padding: 0 3rem;
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.02), rgba(15, 23, 42, 0.05));
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 20px rgba(255, 255, 255, 0.5), 0 10px 40px rgba(0, 0, 0, 0.03);
+}
+
+[data-md-color-scheme="slate"] .atlas-teaching-anim {
+  background: linear-gradient(145deg, rgba(20, 25, 35, 0.6), rgba(10, 15, 25, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 10px rgba(255, 255, 255, 0.02), 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Technical Grid */
+.atlas-teaching-anim::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: center center;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+}
+[data-md-color-scheme="slate"] .atlas-teaching-anim::before {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+.anim-node {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  padding: 1rem 1.5rem;
+  border-radius: 9999px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--atlas-navy);
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08), inset 0 2px 4px rgba(255,255,255,1);
+  min-width: 150px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-md-color-scheme="slate"] .anim-node {
+  background: rgba(30, 35, 45, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,255,0.05);
+}
+
+.anim-path {
+  position: absolute;
+  top: 50%;
+  left: 160px;
+  right: 160px;
+  height: 2px;
+  background: repeating-linear-gradient(to right, var(--atlas-navy) 0, var(--atlas-navy) 8px, transparent 8px, transparent 16px);
+  z-index: 1;
+  opacity: 0.5;
+}
+[data-md-color-scheme="slate"] .anim-path {
+  background: repeating-linear-gradient(to right, var(--atlas-red) 0, var(--atlas-red) 8px, transparent 8px, transparent 16px);
+}
+
+/* The travelling packet */
+.anim-packet {
+  position: absolute;
+  top: 50%;
+  left: 160px;
+  transform: translateY(-50%);
+  background: var(--atlas-red);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 3;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+  animation: packetTravel 6s infinite ease-in-out;
+  white-space: nowrap;
+}
+
+/* We use ::after to change the text halfway through the animation */
+.anim-packet::after {
+  content: "get('my_notes')";
+  animation: packetText 6s infinite step-end;
+}
+
+@keyframes packetText {
+  0%, 45% { content: "get('my_notes')"; }
+  46%, 100% { content: "['Note 1']"; }
+}
+
+@keyframes packetTravel {
+  0% { left: 140px; opacity: 0; background: var(--atlas-red); }
+  10% { left: 160px; opacity: 1; background: var(--atlas-red); }
+  40% { left: calc(100% - 240px); opacity: 1; background: var(--atlas-red); }
+  45% { left: calc(100% - 220px); opacity: 0; background: var(--atlas-red); }
+  50% { left: calc(100% - 220px); opacity: 0; background: var(--atlas-navy); }
+  55% { left: calc(100% - 240px); opacity: 1; background: var(--atlas-navy); }
+  85% { left: 160px; opacity: 1; background: var(--atlas-navy); }
+  95% { left: 140px; opacity: 0; background: var(--atlas-navy); }
+  100% { left: 140px; opacity: 0; background: var(--atlas-navy); }
+}
+
+[data-md-color-scheme="slate"] .anim-packet {
+  animation: packetTravelDark 6s infinite ease-in-out;
+}
+
+@keyframes packetTravelDark {
+  0% { left: 140px; opacity: 0; background: var(--atlas-red); color: white; }
+  10% { left: 160px; opacity: 1; background: var(--atlas-red); color: white; }
+  40% { left: calc(100% - 240px); opacity: 1; background: var(--atlas-red); color: white; }
+  45% { left: calc(100% - 220px); opacity: 0; background: var(--atlas-red); color: white; }
+  50% { left: calc(100% - 220px); opacity: 0; background: white; color: var(--atlas-navy); }
+  55% { left: calc(100% - 240px); opacity: 1; background: white; color: var(--atlas-navy); }
+  85% { left: 160px; opacity: 1; background: white; color: var(--atlas-navy); }
+  95% { left: 140px; opacity: 0; background: white; color: var(--atlas-navy); }
+  100% { left: 140px; opacity: 0; background: white; color: var(--atlas-navy); }
+}
+
+.anim-node.ui { animation: nodePulse 6s infinite; animation-delay: 0s; }
+.anim-node.storage { animation: nodePulse 6s infinite; animation-delay: 2.7s; }
+
+@keyframes nodePulse {
+  0%, 5%, 20%, 100% { transform: scale(1); border-color: var(--atlas-navy); }
+  10% { transform: scale(1.05); border-color: var(--atlas-red); }
+}
+
+[data-md-color-scheme="slate"] .anim-node.ui { animation: nodePulseDark 6s infinite; animation-delay: 0s; }
+[data-md-color-scheme="slate"] .anim-node.storage { animation: nodePulseDark 6s infinite; animation-delay: 2.7s; }
+
+@keyframes nodePulseDark {
+  0%, 5%, 20%, 100% { transform: scale(1); border-color: var(--atlas-red); }
+  10% { transform: scale(1.05); border-color: white; }
+}
+
+/* ==========================================================
+ * NEW: COMPREHENSIVE PEDAGOGICAL ANIMATIONS
+ * ========================================================== */
+
+/* 1. REGISTRY ANIMATION */
+.registry-anim .worker-node {
+  animation: regWorkerPulse 4s infinite;
+}
+.anim-registry {
+  position: relative;
+  z-index: 2;
+  background: var(--atlas-navy);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(15, 23, 42, 0.3);
+  animation: regGlow 4s infinite;
+}
+[data-md-color-scheme="slate"] .anim-registry {
+  background: white;
+  color: var(--atlas-navy);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+.anim-registry .reg-list::after {
+  content: "";
+  display: block;
+  font-weight: 400;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  animation: regList 4s infinite step-end;
+}
+.anim-ping {
+  position: absolute;
+  top: 50%; left: 160px;
+  width: 15px; height: 15px;
+  background: var(--atlas-red);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  animation: pingTravel 4s infinite ease-out;
+}
+
+@keyframes regWorkerPulse {
+  0%, 10%, 100% { transform: scale(1); }
+  5% { transform: scale(1.1); }
+}
+@keyframes pingTravel {
+  0% { left: 140px; opacity: 0; }
+  5% { left: 160px; opacity: 1; transform: translateY(-50%) scale(1); }
+  25% { left: calc(100% - 240px); opacity: 0; transform: translateY(-50%) scale(2); }
+  100% { left: calc(100% - 240px); opacity: 0; }
+}
+@keyframes regGlow {
+  0%, 20%, 100% { transform: scale(1); }
+  25% { transform: scale(1.05); }
+}
+@keyframes regList {
+  0%, 24% { content: "- [ empty ]"; }
+  25%, 100% { content: "+ Worker A (Online)"; color: #10b981; }
+}
+
+/* 2. SESSION HANDSHAKE ANIMATION */
+.session-anim { justify-content: center; }
+.session-anim .req-node { position: absolute; left: 2rem; z-index: 4; }
+.session-anim .prov-node { position: absolute; right: 2rem; z-index: 4; }
+.anim-core {
+  position: relative; z-index: 3;
+  background: var(--md-default-bg-color); border: 2px dashed var(--atlas-navy);
+  padding: 1rem 2rem; border-radius: 9999px; font-weight: bold; color: var(--atlas-navy);
+}
+[data-md-color-scheme="slate"] .anim-core { border-color: var(--atlas-red); color: var(--md-default-fg-color); }
+
+.session-tunnel {
+  position: absolute; top: 50%; left: 160px; right: 160px; height: 8px;
+  background: var(--atlas-navy); border-radius: 4px; z-index: 2;
+  transform: translateY(-50%) scaleX(0); transform-origin: left;
+  animation: tunnelBuild 6s infinite ease-in-out;
+}
+[data-md-color-scheme="slate"] .session-tunnel { background: var(--atlas-red); }
+
+.session-packet {
+  position: absolute; top: 50%; left: 160px; width: 20px; height: 20px;
+  background: white; border: 4px solid var(--atlas-red); border-radius: 50%;
+  transform: translateY(-50%); z-index: 5;
+  animation: sessPacketTravel 6s infinite ease-in-out;
+}
+
+@keyframes tunnelBuild {
+  0%, 20% { transform: translateY(-50%) scaleX(0); }
+  30%, 80% { transform: translateY(-50%) scaleX(1); }
+  90%, 100% { transform: translateY(-50%) scaleX(0); transform-origin: right; }
+}
+@keyframes sessPacketTravel {
+  0%, 35% { left: 140px; opacity: 0; }
+  40% { left: 160px; opacity: 1; }
+  60% { left: calc(100% - 160px); opacity: 1; }
+  65%, 100% { left: calc(100% - 140px); opacity: 0; }
+}
+
+/* 3. MANAGER COMPOSITION ANIMATION */
+.manager-anim { justify-content: center; height: 250px; }
+.blueprint {
+  position: absolute; z-index: 1;
+  width: 120px; height: 80px;
+  background: rgba(15, 23, 42, 0.1); border: 2px dashed var(--atlas-navy);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: bold;
+  animation: blueprintDrop 8s infinite ease-in-out;
+}
+[data-md-color-scheme="slate"] .blueprint { background: rgba(239, 68, 68, 0.1); border-color: var(--atlas-red); }
+
+.grid-lines {
+  position: absolute; z-index: 0; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle, var(--atlas-navy) 2px, transparent 2.5px);
+  background-size: 40px 40px; opacity: 0;
+  animation: gridReveal 8s infinite;
+}
+[data-md-color-scheme="slate"] .grid-lines { background: radial-gradient(circle, var(--atlas-red) 2px, transparent 2.5px); background-size: 40px 40px; }
+
+.m-node { position: absolute; animation: nodeSnap 8s infinite ease-in-out; }
+.m-node.n1 { animation-name: nodeSnap1; }
+.m-node.n2 { animation-name: nodeSnap2; }
+.m-node.n3 { animation-name: nodeSnap3; }
+
+@keyframes blueprintDrop {
+  0%, 10% { transform: scale(0); opacity: 0; }
+  20%, 80% { transform: scale(3.5); opacity: 1; }
+  90%, 100% { transform: scale(0); opacity: 0; }
+}
+@keyframes gridReveal {
+  0%, 25% { opacity: 0; }
+  30%, 80% { opacity: 0.1; }
+  85%, 100% { opacity: 0; }
+}
+@keyframes nodeSnap1 {
+  0%, 15% { top: 10px; left: 20px; opacity: 0; }
+  20% { top: 10px; left: 20px; opacity: 1; }
+  35%, 80% { top: 40px; left: 50%; transform: translateX(-50%); opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+@keyframes nodeSnap2 {
+  0%, 15% { bottom: 10px; left: 10px; opacity: 0; }
+  20% { bottom: 10px; left: 10px; opacity: 1; }
+  35%, 80% { top: 140px; left: 25%; transform: translateX(-50%); opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+@keyframes nodeSnap3 {
+  0%, 15% { bottom: 20px; right: 10px; opacity: 0; }
+  20% { bottom: 20px; right: 10px; opacity: 1; }
+  35%, 80% { top: 140px; left: 75%; transform: translateX(-50%); opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+/* 4. MODEL ENFORCEMENT ANIMATION */
+.model-filter {
+  position: relative; z-index: 2;
+  background: transparent; border: 4px solid var(--atlas-navy);
+  height: 80px; width: 40px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  animation: filterReact 6s infinite;
+}
+[data-md-color-scheme="slate"] .model-filter { border-color: var(--atlas-red); }
+
+.bad-packet {
+  position: absolute; top: 50%; left: 160px; width: 20px; height: 20px;
+  background: #f43f5e; clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  transform: translateY(-50%); z-index: 3;
+  animation: badTravel 6s infinite ease-in;
+}
+.good-packet {
+  position: absolute; top: 50%; left: 160px; width: 20px; height: 20px;
+  background: #3b82f6; border-radius: 50%;
+  transform: translateY(-50%); z-index: 3;
+  animation: goodTravel 6s infinite ease-in-out;
+}
+
+@keyframes filterReact {
+  0%, 24% { border-color: var(--atlas-navy); background: transparent; }
+  25%, 35% { border-color: #f43f5e; background: rgba(244, 63, 94, 0.2); }
+  36%, 100% { border-color: var(--atlas-navy); background: transparent; }
+}
+[data-md-color-scheme="slate"] @keyframes filterReact {
+  0%, 24% { border-color: var(--atlas-red); background: transparent; }
+  25%, 35% { border-color: #f43f5e; background: rgba(244, 63, 94, 0.2); }
+  36%, 100% { border-color: var(--atlas-red); background: transparent; }
+}
+@keyframes badTravel {
+  0% { left: 140px; opacity: 0; }
+  5% { left: 160px; opacity: 1; }
+  25% { left: calc(50% - 40px); opacity: 1; transform: translateY(-50%) scale(1); }
+  26%, 100% { left: calc(50% - 40px); opacity: 0; transform: translateY(-50%) scale(2); }
+}
+@keyframes goodTravel {
+  0%, 45% { left: 140px; opacity: 0; }
+  50% { left: 160px; opacity: 1; }
+  75% { left: calc(100% - 160px); opacity: 1; }
+  85%, 100% { left: calc(100% - 140px); opacity: 0; }
+}
+
+/* ==========================================================
+ * DEEP DIVE: THE ENGINE ROOM ANIMATIONS
+ * ========================================================== */
+
+/* 1. Boot Sequence & Scheduler */
+.engine-boot-anim { justify-content: space-around; height: 250px; }
+.boot-scheduler {
+  background: var(--atlas-red); color: white; padding: 1.5rem;
+  border-radius: 9999px; z-index: 3;
+  animation: pulseScheduler 8s infinite;
+}
+.boot-yaml {
+  position: absolute; left: 40px; top: 50%; transform: translateY(-50%);
+  background: var(--md-default-bg-color); border: 2px dashed var(--atlas-navy);
+  padding: 1rem; border-radius: 8px; z-index: 2;
+}
+[data-md-color-scheme="slate"] .boot-yaml { border-color: var(--atlas-red); }
+.boot-registry {
+  position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+  width: 140px; height: 180px; border: 2px solid var(--atlas-navy);
+  border-radius: 12px; background: rgba(15, 23, 42, 0.05); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; padding-top: 1rem;
+}
+[data-md-color-scheme="slate"] .boot-registry { border-color: var(--atlas-red); background: rgba(239, 68, 68, 0.05); }
+.boot-registry-item {
+  width: 80%; height: 20px; background: var(--atlas-navy); margin-top: 10px;
+  border-radius: 4px; opacity: 0;
+  animation: populateReg 8s infinite step-end;
+}
+[data-md-color-scheme="slate"] .boot-registry-item { background: var(--atlas-red); }
+.boot-registry-item:nth-child(2) { animation-delay: 0.5s; }
+.boot-registry-item:nth-child(3) { animation-delay: 1s; }
+
+.boot-ray {
+  position: absolute; height: 2px; background: var(--atlas-red);
+  left: 140px; width: calc(50% - 140px); top: 50%; z-index: 1;
+  transform-origin: left; transform: scaleX(0);
+  animation: shootRay 8s infinite;
+}
+.boot-ray-right { left: 50%; width: calc(50% - 140px); animation-name: shootRayRight; }
+
+@keyframes pulseScheduler { 0%, 15%, 80%, 100% { transform: scale(1); } 20%, 75% { transform: scale(1.1); box-shadow: 0 0 20px rgba(239,68,68,0.5); } }
+@keyframes shootRay { 0%, 15% { transform: scaleX(0); } 20%, 80% { transform: scaleX(1); } 85%, 100% { transform: scaleX(0); } }
+@keyframes shootRayRight { 0%, 25% { transform: scaleX(0); } 30%, 80% { transform: scaleX(1); } 85%, 100% { transform: scaleX(0); } }
+@keyframes populateReg { 0%, 30% { opacity: 0; } 35%, 85% { opacity: 1; } 90%, 100% { opacity: 0; } }
+
+/* 2. Room Sandboxing */
+.engine-room-anim { height: 300px; justify-content: center; }
+.room-box {
+  position: absolute; width: 0; height: 0;
+  border: 4px dashed var(--atlas-navy); border-radius: 20px;
+  display: flex; align-items: center; justify-content: space-around;
+  animation: expandRoom 8s infinite ease-in-out;
+  background: rgba(15, 23, 42, 0.05); overflow: hidden;
+}
+[data-md-color-scheme="slate"] .room-box { border-color: var(--atlas-red); background: rgba(239, 68, 68, 0.05); }
+.room-label { position: absolute; top: 10px; left: 20px; font-weight: bold; opacity: 0; animation: fadeRoomLabel 8s infinite; }
+.room-worker { opacity: 0; transform: translateY(20px); animation: dropWorker 8s infinite ease-out; }
+.room-worker.w2 { animation-delay: 0.5s; }
+
+@keyframes expandRoom { 0%, 10% { width: 0; height: 0; opacity: 0; } 20%, 85% { width: 80%; height: 200px; opacity: 1; } 95%, 100% { width: 0; height: 0; opacity: 0; } }
+@keyframes fadeRoomLabel { 0%, 20% { opacity: 0; } 25%, 85% { opacity: 1; } 90%, 100% { opacity: 0; } }
+@keyframes dropWorker { 0%, 30% { opacity: 0; transform: translateY(20px); } 35%, 85% { opacity: 1; transform: translateY(0); } 90%, 100% { opacity: 0; transform: translateY(-20px); } }
+
+/* 3. Binding Handshake */
+.engine-binding-anim { height: 250px; justify-content: space-between; }
+.bind-req { position: absolute; left: 40px; top: 50%; transform: translateY(-50%); }
+.bind-prov { position: absolute; right: 40px; top: 50%; transform: translateY(-50%); }
+.bind-core { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); padding: 0.5rem 1rem; }
+.bind-line-up {
+  position: absolute; left: 110px; top: 40px; width: calc(50% - 110px); height: calc(50% - 40px);
+  border-left: 2px dashed var(--atlas-navy); border-top: 2px dashed var(--atlas-navy); border-top-left-radius: 12px;
+  clip-path: polygon(0 100%, 0 100%, 0 100%, 0 100%);
+  animation: drawUp 8s infinite;
+}
+.bind-line-down {
+  position: absolute; right: 110px; top: 40px; width: calc(50% - 110px); height: calc(50% - 40px);
+  border-right: 2px dashed var(--atlas-navy); border-top: 2px dashed var(--atlas-navy); border-top-right-radius: 12px;
+  clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
+  animation: drawDown 8s infinite;
+}
+.bind-tunnel {
+  position: absolute; top: 50%; left: 160px; right: 160px; height: 12px;
+  background: var(--atlas-red); border-radius: 6px; transform: translateY(-50%) scaleX(0);
+  animation: lockTunnel 8s infinite;
+}
+[data-md-color-scheme="slate"] .bind-line-up, [data-md-color-scheme="slate"] .bind-line-down { border-color: var(--atlas-red); }
+[data-md-color-scheme="slate"] .bind-tunnel { background: white; }
+
+@keyframes drawUp { 0%, 10% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); } 20%, 80% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } 90%, 100% { clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0); } }
+@keyframes drawDown { 0%, 25% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); } 35%, 80% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } 90%, 100% { clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%); } }
+@keyframes lockTunnel { 0%, 45% { transform: translateY(-50%) scaleX(0); } 50%, 80% { transform: translateY(-50%) scaleX(1); box-shadow: 0 0 20px rgba(239,68,68,0.6); } 90%, 100% { transform: translateY(-50%) scaleX(0); } }
+
+/* 4. SDK Serialization */
+.engine-sdk-anim { height: 200px; justify-content: center; }
+.sdk-box {
+  width: 400px; height: 120px; border: 2px solid var(--atlas-navy); border-radius: 12px;
+  display: flex; align-items: center; justify-content: space-between; padding: 1rem;
+  background: rgba(15, 23, 42, 0.05); position: relative;
+}
+[data-md-color-scheme="slate"] .sdk-box { border-color: var(--atlas-red); background: rgba(239, 68, 68, 0.05); }
+.sdk-func { background: var(--atlas-navy); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-family: monospace; }
+.sdk-json { background: var(--md-default-bg-color); border: 2px dashed var(--atlas-navy); padding: 0.5rem 1rem; border-radius: 8px; font-family: monospace; }
+[data-md-color-scheme="slate"] .sdk-func { background: var(--atlas-red); }
+[data-md-color-scheme="slate"] .sdk-json { border-color: white; color: white; background: transparent; }
+.sdk-arrow { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 2rem; color: var(--atlas-navy); }
+[data-md-color-scheme="slate"] .sdk-arrow { color: var(--atlas-red); }
+.sdk-data {
+  position: absolute; left: 120px; top: 50%; transform: translateY(-50%);
+  background: #10b981; width: 15px; height: 15px; border-radius: 50%;
+  animation: serialize 6s infinite;
+}
+@keyframes serialize {
+  0% { left: 120px; background: #10b981; border-radius: 50%; opacity: 0; }
+  10% { left: 120px; background: #10b981; border-radius: 50%; opacity: 1; }
+  45% { left: calc(100% - 130px); background: #3b82f6; border-radius: 0; opacity: 1; }
+  55% { left: calc(100% - 130px); background: #3b82f6; border-radius: 0; opacity: 0; }
+  100% { opacity: 0; }
+}

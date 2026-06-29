@@ -4,67 +4,110 @@ repo_url: https://github.com/atlas-system-suite/Atlas
 
 theme:
   name: material
+  custom_dir: docs/overrides
+  logo: assets/atlas_logo_light.png
+  favicon: assets/atlas_logo_light.png
+  font:
+    text: Inter
+    code: JetBrains Mono
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
+    - navigation.path
+    - navigation.prune
+    - navigation.top
+    - navigation.tracking
     - toc.integrate
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.tabs.link
   palette:
-    # Palette toggle for light mode
+    # Default Light Mode (Apple/Claude style)
     - scheme: default
+      primary: white
+      accent: black
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    # Palette toggle for dark mode
+    # Fallback Dark Mode
     - scheme: slate
+      primary: black
+      accent: white
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
 
 docs_dir: docs
 
 nav:
   - Home: index.md
-  - The Constitution: CONSTITUTION.md
-  - Foundational Concepts:
-    - Philosophy: philosophy/philosophy.md
-    - Vision: philosophy/vision.md
-    - Studio Suite: studio-suite.md
-  - Guides:
-    - SDK Quick Start: guides/sdk-quickstart.md
-    - SDK Primitive Functions: guides/sdk-primitives.md
-    - Building Workers & Roles: guides/building-workers.md
-    - Building Managers: guides/building-managers.md
-    - CLI Reference: guides/cli-reference.md
-  - Standard Library (v1):
-    - Catalog Overview: stdlib/index.md
-    - Core: stdlib/core.md
-    - Storage: stdlib/storage.md
-    - Networking: stdlib/networking.md
-    - System: stdlib/system.md
-    - UI & Media: stdlib/ui-media.md
-    - AI & Hardware: stdlib/ai-hardware.md
-  - Standard Models (v1):
-    - Catalog Overview: models/index.md
-    - Core Models: models/core.md
-    - Storage Models: models/storage.md
-    - Networking Models: models/networking.md
-    - Runtime Models: models/runtime.md
-    - UI Models: models/ui.md
-    - Media Models: models/media.md
-    - AI Models: models/ai.md
-    - Hardware Models: models/hardware.md
-  - Architecture (v1.0):
-    - Execution Model: architecture/execution-model.md
-    - Core Runtime: specs/Core.md
-    - Runtime Lifecycle: specs/Runtime.md
-    - Workers: specs/Workers.md
-    - Models: specs/Models.md
-    - Roles: specs/Roles.md
-    - Registry: specs/Registry.md
-    - Capabilities: specs/Capabilities.md
-    - Communication: specs/Communication.md
-    - Manifest Schema: specs/ManifestSchema.md
+  - About:
+    - Why Atlas Exists: about/why-atlas-exists.md
+    - Philosophy: about/philosophy.md
+    - Core Concepts: about/core-concepts.md
+    - Architecture: about/architecture.md
+    - Atlas Studio Suite: about/studio-suite.md
+    - Why Atlas is Different: about/why-atlas-is-different.md
+    - Roadmap: about/roadmap.md
+  - Learn:
+    - Welcome to the Journey: journey/index.md
+    - 1. Scaffolding & CLI: journey/01-scaffolding.md
+    - 2. State & Standard Models: journey/02-state-and-models.md
+    - 3. Orchestration & Managers: journey/03-the-manager.md
+  - The Engine Room: journey/the-engine-room.md
+  - Reference:
+    - Manifest Deep Dive: compendium/manifests.md
+    - Worker Internals: compendium/workers.md
+    - Manager Composition: compendium/managers.md
+    - Model Contracts: compendium/models.md
+    - Adapter Translations: compendium/adapters.md
+    - CLI Reference: compendium/cli-reference.md
+  - Ecosystem:
+    - Standard Library:
+      - Catalog Overview: stdlib/index.md
+      - Core: stdlib/core.md
+      - Storage: stdlib/storage.md
+      - Networking: stdlib/networking.md
+      - System: stdlib/system.md
+      - UI & Media: stdlib/ui-media.md
+      - AI & Hardware: stdlib/ai-hardware.md
+    - Standard Models:
+      - Catalog Overview: models/index.md
+      - Core Models: models/core.md
+      - Storage Models: models/storage.md
+      - Networking Models: models/networking.md
+      - Runtime Models: models/runtime.md
+      - UI Models: models/ui.md
+      - Media Models: models/media.md
+      - AI Models: models/ai.md
+      - Hardware Models: models/hardware.md
+  - Architecture:
+    - The Constitution: CONSTITUTION.md
+    - Foundational Concepts:
+      - Philosophy: philosophy/philosophy.md
+      - Vision: philosophy/vision.md
+      - Studio Suite: studio-suite.md
+    - Specifications:
+      - Execution Model: architecture/execution-model.md
+      - Core Runtime: specs/Core.md
+      - Runtime Lifecycle: specs/Runtime.md
+      - Workers: specs/Workers.md
+      - Models: specs/Models.md
+      - Roles: specs/Roles.md
+      - Registry: specs/Registry.md
+      - Capabilities: specs/Capabilities.md
+      - Communication: specs/Communication.md
+      - Manifest Schema: specs/ManifestSchema.md
   - Implementation Planning:
     - Runtime Blueprint: architecture/runtime-blueprint.md
     - Phase 1.1 - Manifest Loader: specs/implementation/phase-1.1/Phase1-ManifestLoader.md
@@ -86,9 +129,22 @@ plugins:
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js
+  - https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.bundle.min.js
+  - https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js
+  - javascripts/animations.js

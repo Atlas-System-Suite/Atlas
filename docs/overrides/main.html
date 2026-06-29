@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block tabs %}
+  {{ super() }}
+  {% if page.is_homepage %}
+    <!-- Premium Book / Learning Guide Entrance -->
+    <div class="atlas-hero-container" style="position: relative; overflow: visible;">
+      <!-- Cyberpunk Data Cityscape — breaks out of container -->
+      <div id="anime-cityscape" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; perspective: 800px; display: flex; align-items: center; justify-content: center;"></div>
+      <div class="atlas-hero-content" style="position: relative; z-index: 1;">
+        <div class="atlas-company-label animate-reveal">Atlas System Suite</div>
+        <h1 class="atlas-hero-title animate-reveal delay-1">
+          Welcome to the<br>
+          Modular Future<br>
+          of Computation
+        </h1>
+      </div>
+    </div>
+
+    <!-- Dual Pathway Split -->
+    <div class="atlas-features-wrapper animate-reveal delay-2" style="padding-top: 0;">
+      <div class="atlas-features-grid" style="grid-template-columns: 1fr 1fr; gap: 3rem;">
+        
+        <!-- The Journey (Course) -->
+        <a href="journey/" style="text-decoration: none;">
+          <div class="atlas-feature-card" style="height: 100%;">
+            <div class="subtitle">LEARNING GUIDE</div>
+            <h3>The Journey</h3>
+            <p>
+              With <b>The Journey</b> you can build a complete distributed application from scratch and learn the architectural philosophy by doing. It feels just like an interactive masterclass!
+            </p>
+            <div style="font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; color: var(--atlas-red); display: flex; align-items: center; gap: 0.5rem; font-size: 1.2rem;">
+              Start Course <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- The Compendium (Reference) -->
+        <a href="compendium/manifests/" style="text-decoration: none;">
+          <div class="atlas-feature-card" style="height: 100%;">
+            <div class="subtitle">REFERENCE MATERIAL</div>
+            <h3>The Compendium</h3>
+            <p>
+              The definitive, exhaustive reference. No need to deal with the complexity of guessing how the global registry works. Deep dives into schemas, communication protocols, and invariants.
+            </p>
+            <div style="font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; color: var(--atlas-red); display: flex; align-items: center; gap: 0.5rem; font-size: 1.2rem;">
+              Read Documentation <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+    
+  {% endif %}
+{% endblock %}

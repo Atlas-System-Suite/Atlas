@@ -1,6 +1,7 @@
 # Atlas
 
-<img src="docs/assets/logo_11.png" alt="Atlas Hero Logo" width="250"/>
+<img src="docs/assets/atlas_logo.png" alt="Atlas Hero Logo" width="250"/>
+
 
 **Documentation:** [https://atlas-system-suite.github.io/Atlas/](https://atlas-system-suite.github.io/Atlas/)
 > **Atlas introduces a universal execution model for software through Workers.**

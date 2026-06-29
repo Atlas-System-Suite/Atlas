@@ -237,11 +237,7 @@ class StudioCliWorker:
             from rich.text import Text
             import questionary
             
-            logo = (
-                "\n[bold magenta]    ❖[/bold magenta]\n"
-                "[bold magenta]   ❖ ❖[/bold magenta]    [bold bright_white]ATLAS STUDIO[/bold bright_white]\n"
-                "[bold magenta]  ❖ ❖ ❖[/bold magenta]   [dim white]Part of the Atlas Software Suite[/dim white]\n"
-            )
+            logo = "\n[bold white]ATLAS STUDIO[/bold white]\n[dim white]Part of the Atlas Software Suite[/dim white]\n"
             
             def clear_screen():
                 os.system('cls' if os.name == 'nt' else 'clear')

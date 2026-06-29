@@ -12,13 +12,13 @@
       
       
       
-        <link rel="next" href="CONSTITUTION/">
+        <link rel="next" href="about/why-atlas-exists/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="assets/atlas_logo_light.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
@@ -44,10 +44,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
     
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -65,18 +67,13 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="black">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
-      
-        
-        <a href="#atlas-software-platform" class="md-skip">
-          Skip to content
-        </a>
       
     </div>
     <div data-md-component="announce">
@@ -86,12 +83,13 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="." title="Atlas Software Platform" class="md-header__button md-logo" aria-label="Atlas Software Platform" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="assets/atlas_logo_light.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -121,7 +119,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="black"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -131,7 +129,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="white"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -165,11 +163,18 @@
       </label>
       <nav class="md-search__options" aria-label="Search">
         
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
       
     </form>
     <div class="md-search__output">
@@ -201,14 +206,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -239,14 +238,54 @@
   
   
   
+    
+    
+      <li class="md-tabs__item">
+        <a href="about/why-atlas-exists/" class="md-tabs__link">
+          
+  
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="journey/" class="md-tabs__link">
+          
+  
+  
+  Learn
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
     <li class="md-tabs__item">
-      <a href="CONSTITUTION/" class="md-tabs__link">
+      <a href="journey/the-engine-room/" class="md-tabs__link">
         
   
   
     
   
-  The Constitution
+  The Engine Room
 
       </a>
     </li>
@@ -261,11 +300,11 @@
     
     
       <li class="md-tabs__item">
-        <a href="philosophy/philosophy/" class="md-tabs__link">
+        <a href="compendium/manifests/" class="md-tabs__link">
           
   
   
-  Foundational Concepts
+  Reference
 
         </a>
       </li>
@@ -280,20 +319,7 @@
   
     
     
-      <li class="md-tabs__item">
-        <a href="guides/sdk-quickstart/" class="md-tabs__link">
-          
-  
-  
-  Guides
-
-        </a>
-      </li>
-    
-  
-
       
-        
   
   
   
@@ -305,10 +331,13 @@
           
   
   
-  Standard Library (v1)
+  Ecosystem
 
         </a>
       </li>
+    
+  
+
     
   
 
@@ -321,11 +350,11 @@
     
     
       <li class="md-tabs__item">
-        <a href="architecture/execution-model/" class="md-tabs__link">
+        <a href="CONSTITUTION/" class="md-tabs__link">
           
   
   
-  Architecture (v1.0)
+  Architecture
 
         </a>
       </li>
@@ -376,15 +405,75 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
         
       
+  
+    <!-- Premium Book / Learning Guide Entrance -->
+    <div class="atlas-hero-container" style="position: relative; overflow: hidden;">
+      <div id="home-particles" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></div>
+      <div class="atlas-hero-content" style="position: relative; z-index: 1;">
+        <div class="atlas-company-label animate-reveal">Atlas System Suite</div>
+        <h1 class="atlas-hero-title animate-reveal delay-1">
+          Welcome to the<br>
+          Modular Future<br>
+          of Computation
+        </h1>
+      </div>
+    </div>
+
+    <!-- Dual Pathway Split -->
+    <div class="atlas-features-wrapper animate-reveal delay-2" style="padding-top: 0;">
+      <div class="atlas-features-grid" style="grid-template-columns: 1fr 1fr; gap: 3rem;">
+        
+        <!-- The Journey (Course) -->
+        <a href="journey/" style="text-decoration: none;">
+          <div class="atlas-feature-card" style="height: 100%;">
+            <div class="subtitle">LEARNING GUIDE</div>
+            <h3>The Journey</h3>
+            <p>
+              With <b>The Journey</b> you can build a complete distributed application from scratch and learn the architectural philosophy by doing. It feels just like an interactive masterclass!
+            </p>
+            <div style="font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; color: var(--atlas-red); display: flex; align-items: center; gap: 0.5rem; font-size: 1.2rem;">
+              Start Course <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- The Compendium (Reference) -->
+        <a href="compendium/manifests/" style="text-decoration: none;">
+          <div class="atlas-feature-card" style="height: 100%;">
+            <div class="subtitle">REFERENCE MATERIAL</div>
+            <h3>The Compendium</h3>
+            <p>
+              The definitive, exhaustive reference. No need to deal with the complexity of guessing how the global registry works. Deep dives into schemas, communication protocols, and invariants.
+            </p>
+            <div style="font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; color: var(--atlas-red); display: flex; align-items: center; gap: 0.5rem; font-size: 1.2rem;">
+              Read Documentation <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+    
+  
+
       <main class="md-main" data-md-component="main">
         <div class="md-main__inner md-grid">
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -399,8 +488,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="." title="Atlas Software Platform" class="md-nav__button md-logo" aria-label="Atlas Software Platform" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+  <img src="assets/atlas_logo_light.png" alt="logo">
 
     </a>
     Atlas Software Platform
@@ -433,26 +521,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
         
@@ -471,151 +539,111 @@
 
       </a>
       
-        
+    </li>
+  
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+    
+      
+      
+  
   
   
   
     
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+    
+    
+    
       
-        <li class="md-nav__item">
-  <a href="#why-atlas-exists" class="md-nav__link">
-    <span class="md-ellipsis">
       
-        Why Atlas Exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#philosophy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Philosophy
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#core-concepts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Core Concepts
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#atlas-studio-suite" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Atlas Studio Suite
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Atlas Studio Suite">
-      <ul class="md-nav__list">
         
-          <li class="md-nav__item">
-  <a href="#miron" class="md-nav__link">
-    <span class="md-ellipsis">
       
-        Miron
+    
+    
       
-    </span>
-  </a>
-  
-</li>
         
-          <li class="md-nav__item">
-  <a href="#solon" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Solon
-      
-    </span>
-  </a>
-  
-</li>
         
-          <li class="md-nav__item">
-  <a href="#varsity" class="md-nav__link">
-    <span class="md-ellipsis">
       
-        Varsity
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
-    </span>
-  </a>
-  
-</li>
         
-      </ul>
-    </nav>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-atlas-is-different" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why Atlas is Different
-      
-    </span>
-  </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#roadmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Roadmap
-      
-    </span>
-  </a>
   
-</li>
+    <a href="about/why-atlas-exists/" class="md-nav__link">
       
-        <li class="md-nav__item">
-  <a href="#fun-fact" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fun Fact
-      
-    </span>
-  </a>
   
-</li>
-      
-    </ul>
   
-</nav>
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="journey/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learn
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
       
     </li>
   
@@ -628,14 +656,14 @@
   
   
     <li class="md-nav__item">
-      <a href="CONSTITUTION/" class="md-nav__link">
+      <a href="journey/the-engine-room/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    The Constitution
+    The Engine Room
   
 
     
@@ -664,23 +692,25 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
+  
+  
+  
+    <a href="compendium/manifests/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
     
   
-    Foundational Concepts
+    Reference
   
 
     
@@ -688,106 +718,12 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Foundational Concepts
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="philosophy/philosophy/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Philosophy
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="philosophy/vision/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Vision
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="studio-suite/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Studio Suite
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -809,23 +745,29 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+  
+  
+  
+    
+  
+  
+  
+    <a href="stdlib/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
     
   
-    Guides
+    Ecosystem
   
 
     
@@ -833,134 +775,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Guides
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="guides/sdk-quickstart/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SDK Quick Start
   
 
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="guides/building-workers/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Building Workers & Roles
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="guides/building-managers/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Building Managers
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="guides/cli-reference/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CLI Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -982,23 +804,25 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
+  
+  
+  
+    <a href="CONSTITUTION/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
     
   
-    Standard Library (v1)
+    Architecture
   
 
     
@@ -1006,218 +830,12 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Standard Library (v1)
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="stdlib/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Catalog Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="stdlib/core/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Core
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="stdlib/storage/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Storage
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="stdlib/networking/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Networking
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="stdlib/system/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    System
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="stdlib/ui-media/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    UI & Media
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="stdlib/ai-hardware/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AI & Hardware
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -1239,358 +857,19 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture (v1.0)
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Architecture (v1.0)
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="architecture/execution-model/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Execution Model
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Core/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Core Runtime
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Runtime/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Runtime Lifecycle
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Workers/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Workers
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Models/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Models
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Roles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Roles
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Registry/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Registry
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Capabilities/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Capabilities
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/Communication/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Communication
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/ManifestSchema/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Manifest Schema
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
       
     
-    
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
-            
+  
+  
+  
+    <a href="architecture/runtime-blueprint/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1604,358 +883,12 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Implementation Planning
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="architecture/runtime-blueprint/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Runtime Blueprint
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.1/Phase1-ManifestLoader/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.1 - Manifest Loader
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.1/Phase1-DynamicLoader/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.1 - Dynamic Loader
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.1/Phase1-Registry/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.1 - Global Registry
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.1/Phase1-Testing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.1 - Testing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.1/Phase1-Diagnostics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.1 - Diagnostics
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.3/Phase1-TransportLayer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.3 - Transport Layer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.3/Phase1-TranslationLayer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.3 - Translation Layer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.3/Phase1-SessionLayer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.3 - Session Layer
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.3/Phase1-InvocationEngine/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.3 - Invocation Engine
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.3/Phase1-RoomManager/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.3 - Room Manager
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="specs/implementation/phase-1.3/Phase1-RuntimeCore/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Phase 1.3 - Runtime Core
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -1977,17 +910,19 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-          
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
-        
-          
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
-            
+  
+  
+  
+    <a href="history/naming/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -2001,50 +936,12 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_8">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    History & ADRs
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="history/naming/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Naming Evolution
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
       
     </li>
   
@@ -2061,100 +958,28 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+  
+
+
+
+  
+
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
+  
+
 
 
   
   
 
 
-<h1 id="atlas-software-platform">Atlas Software Platform</h1>
-<p><img src="assets/logo_11.png" alt="Atlas Hero Logo" width="250"/></p>
-<blockquote>
-<p><strong>Atlas introduces a universal execution model for software through Workers.</strong></p>
-</blockquote>
-<p>Atlas is a software platform that sits precisely between programming languages and user managers. Where programming languages express computation, Atlas expresses software architecture.</p>
-<hr />
-<h2 id="why-atlas-exists">Why Atlas Exists</h2>
-<p>Large applications inevitably become difficult to manage because:
-- Everything becomes tightly coupled.
-- Plugin systems are bolted on as afterthoughts and lack consistency.
-- Testing in isolation becomes nearly impossible.
-- Components aren't easily reusable across different managers.
-- Communication between features becomes ad-hoc and untrackable.</p>
-<p>Atlas solves this by introducing <strong>Workers</strong> and <strong>Models</strong>. By forcing all executable code into strictly bound Workers, Atlas guarantees absolute modularity.</p>
-<hr />
-<h2 id="philosophy">Philosophy</h2>
-<ul>
-<li><strong>Workers own.</strong> (They own state, persistence, and execution).</li>
-<li><strong>Atlas coordinates.</strong> (It handles discovery, lifecycle, and session binding).</li>
-<li><strong>Models define.</strong> (They provide declarative, tool-independent specifications).</li>
-<li><strong>Roles describe.</strong> (They tag Workers for tooling, without changing runtime behavior).</li>
-<li><strong>Tooling teaches.</strong> (Solon enforces the architecture).</li>
-</ul>
-<hr />
-<h2 id="core-concepts">Core Concepts</h2>
-<ul>
-<li><strong>Worker:</strong> The ONLY executable primitive in Atlas. Owns business logic and state.</li>
-<li><strong>Room:</strong> An execution context representing a collaboration between Workers. Rooms are stewarded by Atlas.</li>
-<li><strong>Session:</strong> The communication primitive connecting Workers. Exists inside Rooms.</li>
-<li><strong>Binding:</strong> A negotiated connection established by Atlas between a requesting Worker and a providing Worker.</li>
-<li><strong>Invocation:</strong> The actual execution request sent over a Session and processed by a Worker.</li>
-<li><strong>Model:</strong> The declarative, tool-independent blueprint that a Worker implements.</li>
-<li><strong>Role:</strong> A metadata tag (e.g., <code>database</code>, <code>manager</code>, <code>ai</code>) that describes a Worker to the Studio Suite.</li>
-<li><strong>Registry:</strong> Stores runtime facts. Split into the <strong>Global Registry</strong> (macro-state) and <strong>Room Registry</strong> (execution cache).</li>
-<li><strong>Communication:</strong> Workers communicate by sending Headers. Atlas handles the Transport and Translation layers to guarantee language neutrality.</li>
-</ul>
-<blockquote>
-<p>📖 <strong>Read the deep dive:</strong> <a href="architecture/primitives/">The Definitive Guide to Atlas Primitives</a></p>
-</blockquote>
-<hr />
-<h2 id="architecture">Architecture</h2>
-<div class="highlight"><pre><span></span><code>Programming Language
-         ↓
-   Atlas Runtime
-         ↓
-      Workers
-         ↓
-      Managers
-</code></pre></div>
-<hr />
-<h2 id="atlas-studio-suite">Atlas Studio Suite</h2>
-<p>The Studio Suite is the official developer toolkit for the Atlas ecosystem. </p>
-<h3 id="miron">Miron</h3>
-<p>The runtime console. Equivalent to Task Manager + Docker Desktop + Runtime Inspector. Used to inspect running Workers, monitor communication, view the Registry, and manage topology.</p>
-<h3 id="solon">Solon</h3>
-<p>The build system and validator. Solon consumes Models to generate tests, SDKs, documentation, and mocks. It validates architecture without needing to boot the Runtime.</p>
-<h3 id="varsity">Varsity</h3>
-<p>The learning platform. Provides project scaffolding, interactive tutorials, project review, and acts as an architecture mentor recommending best practices.</p>
-<hr />
-<h2 id="why-atlas-is-different">Why Atlas is Different</h2>
-<p>Atlas combines proven ideas from distinct domains into one coherent platform:
-- <strong>Microkernels:</strong> The Runtime is kept incredibly small, delegating everything to Workers.
-- <strong>Contract-First Development:</strong> Models define communication completely independently of implementation.
-- <strong>Plugin Systems &amp; Component Systems:</strong> Behavior is defined by composition.
-- <strong>Tool-Driven Architecture:</strong> The ecosystem relies heavily on Solon to validate and scaffold.</p>
-<hr />
-<h2 id="roadmap">Roadmap</h2>
-<div class="highlight"><pre><span></span><code>Architecture
-      ↓
-   Runtime
-      ↓
- Studio Suite
-      ↓
- Marketplace
-      ↓
-Multi-language Runtime
-</code></pre></div>
-<hr />
-<h2 id="fun-fact">Fun Fact</h2>
-<p>Every project accumulates a few stories.</p>
-<p>During Atlas' design, the Model system almost had a very different name. For roughly one design session it was internally called <strong>Hookers</strong>, because they "hooked" Workers to standardized behavior.</p>
-<p>That idea survived exactly until someone pointed out what "hooker" usually means in English.</p>
-<p>The name was immediately retired. Models were born.</p>
-<p>The joke, however, remains a part of Atlas history.</p>
+  <h1>Home</h1>
 
 
 
@@ -2164,6 +989,13 @@ Multi-language Runtime
 
 
 
+  
+  
+
+
+
+
+  
 
 
 
@@ -2172,8 +1004,16 @@ Multi-language Runtime
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -2204,10 +1044,22 @@ Multi-language Runtime
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "toc.integrate"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.prune", "navigation.top", "navigation.tracking", "toc.integrate", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.select", "content.code.annotate", "content.tabs.link"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.bundle.min.js"></script>
+      
+        <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+      
+        <script src="javascripts/animations.js"></script>
       
     
   </body>
