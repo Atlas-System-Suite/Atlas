@@ -8,10 +8,23 @@ Welcome to Atlas! This guide will get you from zero to a running Worker in under
 
 Make sure you have:
 - Python 3.13+
-- PyYAML (`pip install pyyaml`)
-- pytest (`pip install pytest`)
+- Git
 
-Run `atlas doctor` to verify your environment:
+## 0. Install the SDK
+
+Currently, Atlas is in its early stages and should be installed directly from source.
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/atlas-system-suite/Atlas.git
+   cd Atlas
+   ```
+2. Install the `atlas` package in editable mode (we recommend using a virtual environment):
+   ```bash
+   pip install -e .
+   ```
+
+Run `atlas doctor` to verify your environment and installation:
 
 ```bash
 atlas doctor
