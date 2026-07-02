@@ -127,7 +127,7 @@ class ManifestLoader:
         if data.get("kind") != "worker":
             return Result.err(ValidationError("Manifest kind must be 'worker'", context={"file": path}))
 
-        worker_data = data
+        worker_data = data.get("worker", data) if isinstance(data.get("worker"), dict) else data
         
         required_fields = ["id", "name", "version", "language", "roles"]
         for field in required_fields:

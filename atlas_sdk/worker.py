@@ -62,6 +62,7 @@ class WorkerMeta:
     capabilities: List[CapabilityMeta] = field(default_factory=list)
     invocation_handlers: Dict[str, Callable] = field(default_factory=dict)
     config_fields: List[ConfigField] = field(default_factory=list)
+    requirements: List[Dict[str, Any]] = field(default_factory=list)
 
 
 # ---------------------------------------------------------
@@ -131,6 +132,23 @@ def configure(key: str, default: Any = None, required: bool = False):
     return decorator
 
 
+def require(capability_name: str, version: str = "*", as_alias: Optional[str] = None):
+    """
+    Declares that a Worker requires a Capability.
+    Can be placed on a method (like `on_init`) or on the Worker class itself.
+    """
+    def decorator(target: Any) -> Any:
+        if not hasattr(target, "_atlas_requirements"):
+            target._atlas_requirements = []
+        target._atlas_requirements.append({
+            "capability": capability_name,
+            "version": version,
+            "as_alias": as_alias or capability_name.split(".")[-1]
+        })
+        return target
+    return decorator
+
+
 # ---------------------------------------------------------
 # WorkerBase
 # ---------------------------------------------------------
@@ -160,6 +178,10 @@ class WorkerBase(ABC):
         super().__init_subclass__(**kwargs)
         meta = WorkerMeta()
 
+        # Collect class-level requirements
+        if hasattr(cls, "_atlas_requirements"):
+            meta.requirements.extend(cls._atlas_requirements)
+
         for name, method in inspect.getmembers(cls, predicate=inspect.isfunction):
             if hasattr(method, '_atlas_capability'):
                 meta.capabilities.append(method._atlas_capability)
@@ -167,6 +189,8 @@ class WorkerBase(ABC):
                 meta.invocation_handlers[method._atlas_invocation.action] = method
             if hasattr(method, '_atlas_config'):
                 meta.config_fields.append(method._atlas_config)
+            if hasattr(method, '_atlas_requirements'):
+                meta.requirements.extend(method._atlas_requirements)
 
         cls._atlas_meta = meta
 
@@ -192,7 +216,13 @@ class WorkerBase(ABC):
 
     def get_meta(self) -> WorkerMeta:
         """Returns the collected metadata for this worker."""
-        return self.__class__._atlas_meta
+        cls = self.__class__
+        meta = cls._atlas_meta
+        if hasattr(cls, "_atlas_requirements"):
+            for req in cls._atlas_requirements:
+                if req not in meta.requirements:
+                    meta.requirements.append(req)
+        return meta
 
     def generate_manifest(self) -> Dict[str, Any]:
         """
@@ -214,7 +244,15 @@ class WorkerBase(ABC):
                 "formats": ["python"],
                 "default_format": "python",
             },
-            "imports": [],
+            "imports": [
+                {
+                    "capability": req["capability"],
+                    "version": req["version"],
+                    "optional": False,
+                    "reason": f"Required as {req['as_alias']}"
+                }
+                for req in meta.requirements
+            ],
             "exports": [
                 {
                     "capability": cap.name,

@@ -23,6 +23,29 @@ from dataclasses import dataclass, field
 # Mock Runtime
 # ---------------------------------------------------------
 
+class MockDependencyProxy:
+    """A proxy representing a required Capability dependency in unit tests."""
+    def __init__(self, capability_name: str, runtime: Any):
+        self._capability_name = capability_name
+        self._runtime = runtime
+
+    def __getattr__(self, name: str):
+        async def _async_rpc_caller(*args, **kwargs):
+            # Check if there is a registered worker providing this capability
+            target_id = self._capability_name
+            for registered_id, worker in self._runtime._workers.items():
+                meta = getattr(worker, 'get_meta', None)
+                if meta:
+                    cap_names = [c.name for c in meta().capabilities]
+                    if self._capability_name in cap_names:
+                        target_id = registered_id
+                        break
+            
+            payload = kwargs
+            return self._runtime.invoke(target_id, name, payload)
+        return _async_rpc_caller
+
+
 class MockRuntime:
     """
     A lightweight fake runtime for unit testing Workers.
@@ -58,6 +81,12 @@ class MockRuntime:
                 value = self._config.get(cfg.key, cfg.default)
                 if cfg.required and value is None:
                     raise ValueError(f"Required config '{cfg.key}' not set in MockRuntime")
+
+            # Inject required capability proxies
+            for req in getattr(worker_meta, 'requirements', []):
+                as_alias = req["as_alias"]
+                proxy = MockDependencyProxy(req["capability"], self)
+                setattr(instance, as_alias, proxy)
 
         # Call on_init lifecycle hook
         if hasattr(instance, 'on_init'):

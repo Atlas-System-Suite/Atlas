@@ -25,6 +25,7 @@ from .worker import (
     capability,
     on_invocation,
     configure,
+    require,
     WorkerMeta,
     CapabilityMeta,
     InvocationMeta,
@@ -74,7 +75,7 @@ __version__ = "1.0.0"
 
 __all__ = [
     # Worker
-    "WorkerBase", "capability", "on_invocation", "configure",
+    "WorkerBase", "capability", "on_invocation", "configure", "require",
     "WorkerMeta", "CapabilityMeta", "InvocationMeta", "ConfigField",
     # Model
     "ModelBase", "model_version",

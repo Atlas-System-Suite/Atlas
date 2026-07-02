@@ -80,11 +80,17 @@ For the Python UI Worker, it generates a Pydantic class. For the Rust Storage Wo
 Now, let's update our `NotesUiWorker` to use the standard Storage capability, rather than an internal python list.
 
 ```python
+import uuid
+import time
+import json
 from atlas_sdk import WorkerBase, capability, on_invocation, require
 from myapp.models import Note
 
 class NotesUiWorker(WorkerBase):
     _worker_id = "myapp.notes_ui"
+    _worker_name = "NotesUiWorker"
+    _worker_version = "1.0.0"
+    _worker_roles = ["worker"]
 
     # We declare that we REQUIRE the core storage capability to function.
     @require("atlas.core.storage", version="^1.0.0", as_alias="db")
@@ -97,28 +103,36 @@ class NotesUiWorker(WorkerBase):
     async def add(self, note_text: str) -> str:
         # We construct the strict auto-generated Model
         new_note = Note(
-            id=self.generate_id(),
+            id=str(uuid.uuid4()),
             content=note_text,
-            timestamp=self.current_time(),
+            timestamp=int(time.time()),
             tags=[]
         )
         
-        # We push the Model across the network boundary
-        # We have NO idea if this is saving to Postgres, Redis, or memory.
-        await self.db.save(new_note)
+        # Serialize the model to a JSON string
+        note_data = json.dumps({
+            "id": new_note.id,
+            "content": new_note.content,
+            "timestamp": new_note.timestamp,
+            "tags": new_note.tags
+        })
+
+        # We push the data across the network boundary to our required Storage capability.
+        # We have NO idea if this is saving to Postgres, Redis, a local file, or memory.
+        await self.db.write(new_note.id, note_data)
         
         return "Note perfectly saved across the boundary!"
 ```
 
 ### The Invisible Serialization Engine
 
-What actually happens when `await self.db.save(new_note)` is called?
+What actually happens when `await self.db.write(new_note.id, note_data)` is called?
 
 Because we used the `@require` decorator, the `self.db` attribute is not a database client. It is an **Atlas SDK Capability Proxy**. 
 
-When you invoke `.save()`, the proxy:
-1. Validates that `new_note` strictly matches the `myapp.models.note` schema.
-2. Serializes the Python object into a packed binary format (or JSON).
+When you invoke `.write()`, the proxy:
+1. Validates and packages the request arguments.
+2. Serializes the payload into a packed format.
 3. Pushes the bytes through the ZeroMQ tunnel that the Runtime established during Boot.
 
 The Storage Worker on the other end receives the bytes. Its own SDK validates the payload against the exact same manifest schema, deserializes it into a Rust struct, and passes it to the business logic function.

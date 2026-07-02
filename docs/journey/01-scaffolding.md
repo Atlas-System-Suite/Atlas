@@ -75,13 +75,52 @@ Atlas will generate a directory called `notes_ui`. Change into it and open `work
 
 ### Code as a Contract
 
-Notice the structure of the generated Python file. It doesn't look like a standard script.
+Notice the structure of the generated Python file. It is a boilerplate worker containing a template `hello` capability:
 
 ```python
 from atlas_sdk import WorkerBase, capability, on_invocation
 
 class NotesUiWorker(WorkerBase):
     _worker_id = "myapp.notes_ui"
+    _worker_name = "NotesUiWorker"
+    _worker_version = "1.0.0"
+    _worker_roles = ["worker"]
+
+    def on_init(self):
+        """Called after construction. Set up your state here."""
+        pass
+
+    def on_start(self):
+        """Called when the runtime starts this worker."""
+        pass
+
+    def on_stop(self):
+        """Called on shutdown. Clean up resources here."""
+        pass
+
+    @capability("myapp.notes_ui.hello", version="1.0.0")
+    @on_invocation("hello")
+    def hello(self, name: str = "World") -> str:
+        """A simple hello capability. Replace me with real logic!"""
+        return f"Hello, {name}! From NotesUiWorker."
+```
+
+### Implementing our Business Logic
+
+Let's modify this boilerplate to implement our Note-taking application.
+First, we want the worker to keep track of a list of notes in memory. We initialize this list in `on_init()`.
+Second, we replace the `hello` capability with an `add` capability that appends a note to the list.
+
+Open `worker.py` and update it as follows:
+
+```python
+from atlas_sdk import WorkerBase, capability, on_invocation
+
+class NotesUiWorker(WorkerBase):
+    _worker_id = "myapp.notes_ui"
+    _worker_name = "NotesUiWorker"
+    _worker_version = "1.0.0"
+    _worker_roles = ["worker"]
     
     def on_init(self):
         """Called by the Runtime after graph resolution."""
@@ -110,16 +149,32 @@ If a Rust worker on a completely different physical machine requests `"myapp.not
 
 ## The Source of Truth: `atlas.yaml`
 
-Alongside your Python code, Atlas generated a declarative manifest.
+Alongside your Python code, Atlas generated a declarative manifest. Let's update it to export `myapp.notes.add` rather than the default hello capability:
 
 ```yaml
 kind: worker
 id: myapp.notes_ui
 name: NotesUiWorker
+version: 1.0.0
+description: An Atlas Project
+language: python
+roles: [worker]
+
+execution:
+  policy: singleton
+
+communication:
+  transports: [memory]
+  formats: [python]
+  default_format: python
+
+imports: []
 
 exports:
   - capability: myapp.notes.add
     version: 1.0.0
+
+translations: []
 ```
 
 Why do we need a YAML file if the Python code already has the `@capability` decorator?
@@ -132,7 +187,7 @@ Because Atlas is **language agnostic**. The core Runtime (which orchestrates the
 
 Because Workers are completely isolated from their infrastructure, we can test them without spinning up the entire operating system or compiling the whole project. 
 
-Atlas provides a `MockRuntime` for this exact purpose. Open `test_notes_ui.py`:
+Atlas provides a `MockRuntime` for this exact purpose. Open `test_notes_ui.py` and update it to test our new `add` capability:
 
 ```python
 from atlas_sdk.testing import MockRuntime
@@ -145,8 +200,8 @@ def test_add_note():
     # 2. Register our isolated worker
     runtime.register(NotesUiWorker, "myapp.notes_ui")
 
-    # 3. Simulate a network capability request
-    result = runtime.invoke("myapp.notes.add", "add", {"note_text": "Buy milk"})
+    # 3. Simulate a network capability request (using the registered Worker ID)
+    result = runtime.invoke("myapp.notes_ui", "add", {"note_text": "Buy milk"})
 
     assert "Total notes: 1" in result
 ```
