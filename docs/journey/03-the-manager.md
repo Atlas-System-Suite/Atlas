@@ -51,52 +51,106 @@ atlas new manager my_app
 cd my_app
 ```
 
-### The Composition Script (`main.py`)
+### The Boilerplate Composition Script (`main.py`)
 
-Open `main.py` in the `my_app` directory. We will use the `ManagerBuilder` API to compose our application topologically.
+Open `main.py` in the `my_app` directory. You will see the default generated boilerplate code:
 
 ```python
-import os
+"""
+MyAppManager — An Atlas Manager
+
+A new Atlas manager
+"""
 from atlas_sdk import ManagerBuilder
 
+
 def build():
-    builder = ManagerBuilder("notes_application", version="1.0.0")
+    manager = (
+        ManagerBuilder("my_app", version="1.0.0", description="A new Atlas manager")
+        .add_worker("atlas.core.logger")
+        .add_worker("atlas.core.config")
+        .add_worker("atlas.core.storage")
+        .configure("LOG_LEVEL", "INFO")
+        .build()
+    )
+    manager.write("atlas.yaml")
+    print(f"Manager '{manager.name}' built successfully!")
+    return manager
 
-    # 1. Add the Atlas Standard Library Storage Worker
-    builder.add_worker("atlas.core.storage")
-    
-    # 2. Add our custom UI Worker
-    builder.add_worker("myapp.notes_ui")
-    
-    # 3. Set global topological configuration
-    builder.configure("STORAGE_PATH", "./notes_db")
-    
-    # 4. Define the entry point of the graph
-    builder.set_entry_point("myapp.notes_ui")
-
-    # 5. Compile to declarative manifest
-    manifest = builder.build()
-    manifest.write("atlas.yaml")
 
 if __name__ == "__main__":
     build()
 ```
 
-### Dynamic Composition, Static Execution
+#### Detailed Breakdown of the Boilerplate:
+* **`ManagerBuilder`**: The SDK class used to programmatically assemble workers, configurations, and network policies into a unified application blueprint.
+* **`.add_worker(worker_id)`**: Registers a worker into the application topology by its global ID. By default, it adds standard core workers: `atlas.core.logger`, `atlas.core.config`, and `atlas.core.storage`.
+* **`.configure(key, value)`**: Sets a global configuration parameter. In the boilerplate, it overrides `LOG_LEVEL` to `"INFO"`.
+* **`.build()`**: Compiles the builder configuration and returns an immutable `ManagerManifest` object.
+* **`manager.write("atlas.yaml")`**: Writes the compiled configuration out as a declarative YAML file.
 
-Run the build script:
+---
+
+### Customizing the Manager for our Notes Application
+
+Let's modify this boilerplate to include our custom `myapp.notes_ui` worker, configure its database path, and set it as the entry point. 
+
+Update `main.py` to match the following code:
+
+```python
+from atlas_sdk import ManagerBuilder
+
+def build():
+    # 1. Initialize the builder
+    builder = ManagerBuilder("notes_application", version="1.0.0")
+
+    # 2. Add the standard logging and storage workers
+    builder.add_worker("atlas.core.logger")
+    builder.add_worker("atlas.core.storage")
+    
+    # 3. Add our custom UI Worker
+    builder.add_worker("myapp.notes_ui")
+    
+    # 4. Set global topological configuration
+    builder.configure("STORAGE_PATH", "./notes_db")
+    
+    # 5. Define the entry point of the graph (the worker that executes first)
+    builder.set_entry_point("myapp.notes_ui")
+
+    # 6. Compile to declarative manifest and save it
+    manifest = builder.build()
+    manifest.write("atlas.yaml")
+    print("Notes Application built successfully!")
+    return manifest
+
+if __name__ == "__main__":
+    build()
+```
+
+> [!NOTE]
+> **Method Chaining vs. Step-by-Step Variables:** 
+> In the boilerplate, you saw method chaining (e.g., `builder.add_worker().configure().build()`). In our updated code, we instantiate `builder = ManagerBuilder(...)` and call the methods on separate lines. Both syntax styles are supported because each builder method returns `self`. Use whichever style is easiest for you to read.
+
+---
+
+### Compiling to the declarative Manifest
+
+Run the composition script to compile the Python code into the final YAML manifest:
 
 ```bash
 python main.py
 ```
 
-This generates an `atlas.yaml` file in the directory. This generated YAML is the finalized, immutable "blueprint" for the application.
+This generates (or updates) the `atlas.yaml` file in the directory. This generated YAML is the finalized, immutable blueprint that the Atlas Runtime reads.
 
 ```yaml
 manager:
   name: notes_application
   version: 1.0.0
+  description: ''
 workers:
+  - id: atlas.core.logger
+    entry_point: false
   - id: atlas.core.storage
     entry_point: false
   - id: myapp.notes_ui
@@ -105,12 +159,17 @@ config:
   STORAGE_PATH: ./notes_db
 ```
 
+#### Detailed Breakdown of the Generated Manifest:
+* **`manager`**: Metadata declaring the application's name and version.
+* **`workers`**: The exact list of workers that the runtime will spin up in this Room. Note that `entry_point: true` is assigned to `myapp.notes_ui`, marking it as the leader.
+* **`config`**: Key-value pairs that the runtime will inject into the workers on startup. Here, `STORAGE_PATH` is passed to the storage worker.
+
 <div class="admonition deep-dive">
   <p class="admonition-title">Why use a Python script to generate YAML?</p>
   <p>Why didn't we just write the `atlas.yaml` by hand? Because a Python build script allows you to make <strong>dynamic composition decisions</strong> before execution begins. You can read from `.env` files, pull secrets from a vault, or selectively include a `DebuggerWorker` only if `DEBUG=1`. However, once the `atlas.yaml` is generated, it becomes perfectly <strong>deterministic</strong>. AI systems should assist deterministic systems. Business rules must remain deterministic.</p>
 </div>
 
-### Booting the Reality
+### Booting the Application
 
 It's time. From inside the `my_app` directory, execute:
 
@@ -118,15 +177,15 @@ It's time. From inside the `my_app` directory, execute:
 atlas run
 ```
 
-### What happens at the edge of reality?
+### What happens under the hood?
 
 1. The Atlas Runtime boots up.
-2. It parses the `atlas.yaml`.
-3. It discovers `atlas.core.storage` (from the standard library) and `myapp.notes_ui` (from your workspace).
-4. It computes a directed acyclic graph (DAG) to ensure all dependencies are met.
-5. It loads both into memory boundaries.
+2. It parses the `atlas.yaml` file.
+3. It discovers `atlas.core.logger` and `atlas.core.storage` (from the standard library) and `myapp.notes_ui` (from your local workspace).
+4. It computes a directed acyclic graph (DAG) to verify that all `@require` capability dependencies are met.
+5. It loads all workers into isolated memory boundaries inside a secure Room.
 6. It triggers the `on_start()` lifecycle hooks.
-7. Because `myapp.notes_ui` is the `entry_point`, it begins handling execution.
+7. Because `myapp.notes_ui` is marked as the `entry_point`, it begins executing and handling requests.
 
 🎉 **Congratulations.** You have just built a modular, decoupled, dynamically-composed Atlas application.
 
