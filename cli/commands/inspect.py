@@ -16,18 +16,49 @@ def handle_inspect(args):
         console.print(f"❌ Manifest not found: {manifest_path}")
         sys.exit(1)
 
-    with open(manifest_path, "r") as f:
-        manifest = yaml.safe_load(f)
+    import zipfile
+    if manifest_path.endswith(".atlas"):
+        try:
+            with zipfile.ZipFile(manifest_path, 'r') as zf:
+                if "atlas.yaml" not in zf.namelist():
+                    console.print(f"❌ Manifest 'atlas.yaml' not found inside package: {manifest_path}")
+                    sys.exit(1)
+                manifest_content = zf.read("atlas.yaml").decode("utf-8")
+                manifest = yaml.safe_load(manifest_content)
+        except Exception as e:
+            console.print(f"❌ Failed to read package file: {e}")
+            sys.exit(1)
+    else:
+        try:
+            with open(manifest_path, "r", encoding="utf-8") as f:
+                manifest = yaml.safe_load(f)
+        except Exception as e:
+            console.print(f"❌ Failed to parse manifest YAML: {e}")
+            sys.exit(1)
+
+    # Resolve root or nested metadata
+    meta_src = manifest
+    is_manager = "manager" in manifest
+    if is_manager and isinstance(manifest["manager"], dict):
+        meta_src = manifest["manager"]
+    elif "worker" in manifest and isinstance(manifest["worker"], dict):
+        meta_src = manifest["worker"]
 
     console.print("🔎 Atlas Inspector\n")
-    console.print(f"   ID:       {manifest.get('id', 'N/A')}")
-    console.print(f"   Name:     {manifest.get('name', 'N/A')}")
-    console.print(f"   Version:  {manifest.get('version', 'N/A')}")
-    console.print(f"   Language:  {manifest.get('language', 'N/A')}")
-    console.print(f"   Roles:     {', '.join(manifest.get('roles', []))}")
+    console.print(f"   ID:       {meta_src.get('id', 'N/A')}")
+    console.print(f"   Name:     {meta_src.get('name', 'N/A')}")
+    console.print(f"   Version:  {meta_src.get('version', 'N/A')}")
+    console.print(f"   Type:     {'Manager' if is_manager else 'Worker'}")
+    
+    if not is_manager:
+        console.print(f"   Language:  {meta_src.get('language', 'N/A')}")
+        console.print(f"   Roles:     {', '.join(meta_src.get('roles', [])) if isinstance(meta_src.get('roles'), list) else 'N/A'}")
+        execution = manifest.get("execution", {})
+        console.print(f"   Policy:    {execution.get('policy', 'N/A')}")
+    else:
+        workers = manifest.get("workers", [])
+        console.print(f"   Workers:   {len(workers)} in topology")
 
-    execution = manifest.get("execution", {})
-    console.print(f"   Policy:    {execution.get('policy', 'N/A')}")
     console.print()
 
     exports = manifest.get("exports", [])
