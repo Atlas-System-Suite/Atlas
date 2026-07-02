@@ -67,17 +67,32 @@ class MockRuntime:
 
     def register(self, worker_cls: Type, worker_id: Optional[str] = None) -> Any:
         """
-        Instantiates and registers a Worker.
-
-        Example::
-
-            worker = runtime.register(MyWorker)
+        Instantiates and registers a Worker, automatically mocking its dependencies.
         """
-        instance = worker_cls()
+        import inspect
+        
+        # 1. Inspect __init__ to mock DI dependencies
+        init_sig = inspect.signature(worker_cls.__init__)
+        kwargs = {}
+        
+        for param_name, param in init_sig.parameters.items():
+            if param_name in ("self", "args", "kwargs"):
+                continue
+            
+            # Infer target capability from type hint or parameter name
+            if param.annotation != inspect.Parameter.empty and hasattr(param.annotation, "_worker_id"):
+                target_cap = param.annotation._worker_id
+            else:
+                target_cap = param_name
+                
+            kwargs[param_name] = MockDependencyProxy(target_cap, self)
+
+        # 2. Instantiate with mocked dependencies
+        instance = worker_cls(**kwargs)
         wid = worker_id or getattr(worker_cls, '_worker_id', None) or worker_cls.__name__
         self._workers[wid] = instance
 
-        # Inject config if the worker has config fields
+        # 3. Inject config if the worker has config fields
         meta = getattr(instance, 'get_meta', None)
         if meta:
             worker_meta = meta()
@@ -86,13 +101,7 @@ class MockRuntime:
                 if cfg.required and value is None:
                     raise ValueError(f"Required config '{cfg.key}' not set in MockRuntime")
 
-            # Inject required capability proxies
-            for req in getattr(worker_meta, 'requirements', []):
-                as_alias = req["as_alias"]
-                proxy = MockDependencyProxy(req["capability"], self)
-                setattr(instance, as_alias, proxy)
-
-        # Call on_init lifecycle hook
+        # Call on_init lifecycle hook (kept for backwards compatibility)
         if hasattr(instance, 'on_init'):
             instance.on_init()
 

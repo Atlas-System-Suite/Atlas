@@ -249,14 +249,123 @@ atlas test
 By aggressively decoupling the *logic* from the *transport*, your worker becomes infinitely scalable and perfectly testable. You never have to mock a database connection just to test a string parsing function.
 
 ---
+# Chapter 1: The Atlas Workspace
 
-### What's Next?
+Welcome to Atlas 0.2! In this chapter, we will build a simple "Notes" application to demonstrate how Atlas radically simplifies backend architecture.
 
-Right now, our notes are just stored in a Python list `self.notes = []`. If the worker restarts, our notes are gone! 
+## The Developer Experience
 
-In traditional architecture, you would import an SQL library right here and tightly couple your UI worker to a database. But in Atlas, **Workers own business state, but the Runtime owns persistence.**
+Atlas is designed so you can write pure, native Python code, while the framework handles all the complex distributed wiring behind the scenes. 
 
-In the next step, we will explore how to consume external Capabilities without breaking our isolation.
+You do not need to write YAML files. You do not need to wire dependency injection graphs. You just write Python classes.
+
+## Scaffolding the Project
+
+Let's create a new Atlas Workspace:
+
+```bash
+mkdir my_atlas_app
+cd my_atlas_app
+mkdir src
+```
+
+## Creating a Storage Worker
+
+In Atlas, logic is divided into **Workers**. Workers are isolated containers of business logic that communicate via RPC. Let's create a storage worker in `src/storage.py`.
+
+```python
+from atlas_sdk import Worker, action
+
+class StorageWorker(Worker):
+    def __init__(self):
+        self.db = []
+        
+    @action
+    async def write(self, content: str):
+        self.db.append(content)
+        print(f"[Storage] Wrote: {content}")
+        
+    @action
+    async def list_all(self):
+        return self.db
+```
+
+Notice how clean this is! 
+1. We inherit from `Worker`.
+2. We use `@action` to expose our methods to the Atlas Runtime.
+3. There are no magic strings, decorators, or capability manifests!
+
+## Creating the Notes Worker
+
+Now, let's create a consumer worker in `src/notes.py` that relies on the `StorageWorker`.
+
+```python
+from atlas_sdk import Worker, action
+from storage import StorageWorker
+
+class NotesWorker(Worker):
+    # Atlas automatically infers your dependencies from type hints!
+    def __init__(self, db: StorageWorker):
+        self.db = db
+        
+    @action
+    async def on_start(self):
+        print("[Notes] Application Started!")
+        
+        # Transparent Async RPC Call
+        await self.db.write(content="Hello Atlas 0.2!")
+        
+        notes = await self.db.list_all()
+        print(f"[Notes] Retrieved: {notes}")
+```
+
+This is the magic of Atlas 0.2. By simply type-hinting `db: StorageWorker` in your constructor, Atlas understands the dependency graph. When the application boots, Atlas automatically injects a highly concurrent, async RPC proxy into `self.db`. 
+
+To the developer, it looks like local execution. To the runtime, it's a scalable, decoupled microservice architecture.
+
+## Wiring the App
+
+Finally, we declare our application topology in `src/manager.py`:
+
+```python
+from atlas_sdk import App
+from notes import NotesWorker
+from storage import StorageWorker
+
+app = App(
+    name="my_notes_app",
+    workers=[StorageWorker, NotesWorker],
+    entry=NotesWorker
+)
+```
+
+## Running the Application
+
+Atlas provides a native development server that spins up your application, wires the dependencies, and streams the logs.
+
+Run your app using the new `atlas dev` command:
+
+```bash
+$ atlas dev --app src/manager.py
+
+┌─────────────────────────────────┐
+│ Atlas Native Development Server │
+│ Atlas 0.2 Developer Experience  │
+└─────────────────────────────────┘
+Loading App topology...
+✔ Loaded App: my_notes_app (v1.0.0)
+  Booting worker: StorageWorker
+  Booting worker: NotesWorker
+✔ Runtime initialized.
+
+▶ Starting application loop...
+
+[Notes] Application Started!
+[Storage] Wrote: Hello Atlas 0.2!
+[Notes] Retrieved: ['Hello Atlas 0.2!']
+```
+
+Congratulations! You've just built your first decoupled Atlas application using the 0.2 SDK. In the next chapter, we will explore Pydantic Models.
 
 <br>
 <strong><a href="../02-state-and-models/" style="color: var(--atlas-red); text-decoration: none; border-bottom: 1px solid var(--atlas-red); padding-bottom: 2px;">Next Chapter: State & Standard Models &rarr;</a></strong>

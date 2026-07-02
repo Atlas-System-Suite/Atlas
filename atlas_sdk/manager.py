@@ -132,3 +132,65 @@ class ManagerBuilder:
             config=self._config,
             entry_point=self._entry_point,
         )
+
+# ---------------------------------------------------------
+# V2 App Base (Atlas 0.2)
+# ---------------------------------------------------------
+
+class App:
+    """
+    Atlas 0.2: Declarative Application Topology.
+    Replaces ManagerBuilder. Uses actual Python classes instead of string IDs.
+    
+    Usage:
+        from atlas import App
+        from src.workers.notes import NotesWorker
+        from src.workers.storage import StorageWorker
+        
+        app = App(
+            name="notes_app",
+            workers=[NotesWorker, StorageWorker],
+            entry=NotesWorker
+        )
+    """
+    def __init__(
+        self, 
+        name: str, 
+        workers: List[Any], 
+        entry: Any, 
+        version: str = "1.0.0", 
+        description: str = ""
+    ):
+        self.name = name
+        self.workers = workers
+        self.entry = entry
+        self.version = version
+        self.description = description
+
+    def generate_manifest(self) -> Dict[str, Any]:
+        worker_refs = []
+        for w in self.workers:
+            # Ensure _worker_id is populated
+            if not getattr(w, "_worker_id", None):
+                w._worker_id = f"{w.__module__.split('.')[-1]}.{w.__name__.lower()}"
+                
+            worker_refs.append({
+                "id": w._worker_id,
+                "entry_point": (w == self.entry)
+            })
+            
+        return {
+            "manager": {
+                "name": self.name,
+                "version": self.version,
+                "description": self.description,
+            },
+            "workers": worker_refs,
+            "config": {},
+        }
+
+    def write_manifest(self, path: str = "atlas.yaml") -> str:
+        with open(path, "w") as f:
+            yaml.dump(self.generate_manifest(), f, default_flow_style=False, sort_keys=False)
+        return path
+

@@ -51,6 +51,12 @@ def create_parser() -> argparse.ArgumentParser:
         "--manifest", default="atlas.yaml", help="Path to the manifest file"
     )
 
+    # --- atlas dev ---
+    dev_parser = subparsers.add_parser("dev", help="Start the native Atlas development server")
+    dev_parser.add_argument(
+        "--app", default="src/manager.py", help="Path to the App definition"
+    )
+
     # --- atlas test ---
     test_parser = subparsers.add_parser("test", help="Run tests")
     test_parser.add_argument(
@@ -92,7 +98,7 @@ def main():
     
     # Fast-path for artifact discovery if command isn't a known primitive
     # The known commands from argparse:
-    known_commands = {"new", "run", "test", "doctor", "validate", "inspect", "info", "clean", "build"}
+    known_commands = {"new", "dev", "run", "test", "doctor", "validate", "inspect", "info", "clean", "build"}
     
     # Check if we should print the banner
     if len(sys.argv) == 1 or "-h" in sys.argv or "--help" in sys.argv:
@@ -113,6 +119,7 @@ def main():
         table.add_column("Description", style="dim")
         
         table.add_row("new", "Scaffold a new Atlas project (Worker, Model, Adapter, Manager)")
+        table.add_row("dev", "Start the native Atlas development server with hot-reloading")
         table.add_row("run", "Run the Atlas application from atlas.yaml")
         table.add_row("test", "Run tests and generate stubs")
         table.add_row("doctor", "Validate your development environment")
@@ -144,6 +151,9 @@ def main():
     if args.command == "new":
         from .commands.new import handle_new
         handle_new(args)
+    elif args.command == "dev":
+        from .commands.dev import handle_dev
+        handle_dev(args)
     elif args.command == "run":
         from .commands.run import handle_run
         handle_run(args)

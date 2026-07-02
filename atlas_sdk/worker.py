@@ -1,33 +1,29 @@
 """
-Atlas SDK — Worker Base
-=======================
+Atlas SDK — Worker V2 (Atlas 0.2)
+=================================
 
-The WorkerBase class and associated decorators provide the canonical way
-to build Atlas Workers without understanding runtime internals.
+The radically simplified API for authoring Atlas Workers.
+Eliminates boilerplate through metaclasses and type inference.
 
 Usage:
-    from atlas_sdk import WorkerBase, capability, on_invocation, configure
+    from atlas_sdk import Worker, action
+    from src.workers.storage import StorageWorker
 
-    class MyWorker(WorkerBase):
-        @capability("atlas.core.greeter", version="1.0.0")
-        def greet(self, name: str) -> str:
-            return f"Hello, {name}!"
+    class NotesWorker(Worker):
+        def __init__(self, db: StorageWorker):
+            self.db = db
+
+        @action
+        async def create_note(self, content: str):
+            await self.db.write(content=content)
 """
 
 from abc import ABC
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    List,
-    Optional,
-    TypeVar,
-)
+from typing import Any, Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 import functools
 import inspect
 import yaml
-import os
 
 
 # ---------------------------------------------------------
@@ -36,29 +32,22 @@ import os
 
 @dataclass
 class CapabilityMeta:
-    """Metadata attached to a method by the @capability decorator."""
     name: str
     version: str = "1.0.0"
     precedence: int = 0
 
-
 @dataclass
 class InvocationMeta:
-    """Metadata attached to a method by the @on_invocation decorator."""
     action: str
-
 
 @dataclass
 class ConfigField:
-    """Metadata attached by the @configure decorator."""
     key: str
     default: Any = None
     required: bool = False
 
-
 @dataclass
 class WorkerMeta:
-    """Aggregated metadata collected from decorators on a WorkerBase subclass."""
     capabilities: List[CapabilityMeta] = field(default_factory=list)
     invocation_handlers: Dict[str, Callable] = field(default_factory=dict)
     config_fields: List[ConfigField] = field(default_factory=list)
@@ -66,62 +55,28 @@ class WorkerMeta:
 
 
 # ---------------------------------------------------------
-# Decorators
+# V2 Decorators
 # ---------------------------------------------------------
 
-def capability(name: str, version: str = "1.0.0", precedence: int = 0):
+def action(func: Callable) -> Callable:
     """
-    Marks a method as an exported Capability.
-
-    Example::
-
-        @capability("atlas.core.greeter", version="1.0.0")
-        def greet(self, name: str) -> str:
-            return f"Hello, {name}!"
+    Atlas 0.2: The primary decorator for exposing a method to the Runtime.
+    This replaces BOTH @capability and @on_invocation.
+    The method name becomes the action name.
     """
-    def decorator(func: Callable) -> Callable:
-        func._atlas_capability = CapabilityMeta(
-            name=name, version=version, precedence=precedence
-        )
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
-        wrapper._atlas_capability = func._atlas_capability
-        return wrapper
-    return decorator
-
-
-def on_invocation(action: str):
-    """
-    Registers a method as an Invocation handler for a specific action.
-
-    Example::
-
-        @on_invocation("process_order")
-        def handle_order(self, payload: dict) -> dict:
-            return {"status": "completed"}
-    """
-    def decorator(func: Callable) -> Callable:
-        func._atlas_invocation = InvocationMeta(action=action)
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            return func(*args, **kwargs)
-        wrapper._atlas_invocation = func._atlas_invocation
-        return wrapper
-    return decorator
-
+    action_name = func.__name__
+    
+    # We store the action marker. The __init_subclass__ will expand it into a Capability.
+    func._atlas_action = action_name
+    
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    wrapper._atlas_action = action_name
+    return wrapper
 
 def configure(key: str, default: Any = None, required: bool = False):
-    """
-    Marks a method as a configuration consumer. The SDK injects
-    the configuration value before the worker starts.
-
-    Example::
-
-        @configure("DATABASE_URL", required=True)
-        def set_db_url(self, value: str):
-            self.db_url = value
-    """
+    """Marks a method as a configuration consumer."""
     def decorator(func: Callable) -> Callable:
         func._atlas_config = ConfigField(key=key, default=default, required=required)
         @functools.wraps(func)
@@ -132,109 +87,84 @@ def configure(key: str, default: Any = None, required: bool = False):
     return decorator
 
 
-def require(capability_name: str, version: str = "*", as_alias: Optional[str] = None):
-    """
-    Declares that a Worker requires a Capability.
-    Can be placed on a method (like `on_init`) or on the Worker class itself.
-    """
-    def decorator(target: Any) -> Any:
-        if not hasattr(target, "_atlas_requirements"):
-            target._atlas_requirements = []
-        target._atlas_requirements.append({
-            "capability": capability_name,
-            "version": version,
-            "as_alias": as_alias or capability_name.split(".")[-1]
-        })
-        return target
-    return decorator
-
-
 # ---------------------------------------------------------
-# WorkerBase
+# V2 Worker Base
 # ---------------------------------------------------------
 
-class WorkerBase(ABC):
+class Worker(ABC):
     """
-    The official base class for all Atlas Workers.
-
-    Subclass this to build a Worker. The SDK automatically discovers
-    capabilities, invocation handlers, and config fields via decorators.
-
-    Lifecycle Hooks (override as needed):
-        - on_init()          — called after construction
-        - on_start()         — called when the worker starts
-        - on_stop()          — called when the worker stops
-        - on_health_check()  — called periodically by the runtime
+    Atlas 0.2 Worker Base.
+    - Infers Worker ID from module/class name.
+    - Infers Capabilities/Invocations from @action methods.
+    - Infers Requirements from __init__ type hints.
     """
-
-    # Class-level metadata cache
-    _worker_id: str = ""
-    _worker_name: str = ""
+    
+    _worker_id: Optional[str] = None
     _worker_version: str = "1.0.0"
     _worker_roles: List[str] = []
 
     def __init_subclass__(cls, **kwargs):
-        """Automatically collect metadata from decorators when a subclass is defined."""
         super().__init_subclass__(**kwargs)
+        
+        # 1. Infer Worker ID
+        if not getattr(cls, "_worker_id", None):
+            cls._worker_id = f"{cls.__module__.split('.')[-1]}.{cls.__name__.lower()}"
+            
         meta = WorkerMeta()
-
-        # Collect class-level requirements
-        if hasattr(cls, "_atlas_requirements"):
-            meta.requirements.extend(cls._atlas_requirements)
-
+        
+        # 2. Inspect __init__ for Dependency Injection requirements
+        init_sig = inspect.signature(cls.__init__)
+        for param_name, param in init_sig.parameters.items():
+            if param_name in ("self", "args", "kwargs"):
+                continue
+            
+            # Use type hint to infer the target capability
+            if param.annotation != inspect.Parameter.empty and hasattr(param.annotation, "_worker_id"):
+                target_capability = param.annotation._worker_id
+            else:
+                # Fallback to the parameter name if no valid type hint exists
+                target_capability = param_name
+                
+            meta.requirements.append({
+                "capability": target_capability,
+                "version": "*",
+                "as_alias": param_name
+            })
+            
+        # 3. Scan methods for @action
         for name, method in inspect.getmembers(cls, predicate=inspect.isfunction):
-            if hasattr(method, '_atlas_capability'):
-                meta.capabilities.append(method._atlas_capability)
-            if hasattr(method, '_atlas_invocation'):
-                meta.invocation_handlers[method._atlas_invocation.action] = method
+            if hasattr(method, '_atlas_action'):
+                action_name = method._atlas_action
+                
+                # Expose a capability mapping to this action
+                cap_name = f"{cls._worker_id}.{action_name}"
+                meta.capabilities.append(CapabilityMeta(name=cap_name))
+                meta.invocation_handlers[action_name] = method
+                
             if hasattr(method, '_atlas_config'):
                 meta.config_fields.append(method._atlas_config)
-            if hasattr(method, '_atlas_requirements'):
-                meta.requirements.extend(method._atlas_requirements)
 
         cls._atlas_meta = meta
 
-    # ---- Lifecycle Hooks (override in subclasses) ----
-
     def on_init(self) -> None:
-        """Called after the worker is constructed. Set up internal state here."""
         pass
 
     def on_start(self) -> None:
-        """Called when the runtime starts this worker."""
         pass
 
     def on_stop(self) -> None:
-        """Called when the runtime stops this worker. Clean up resources here."""
         pass
 
-    def on_health_check(self) -> Dict[str, Any]:
-        """Called periodically. Return a health status dict."""
-        return {"healthy": True}
-
-    # ---- SDK Utilities ----
-
     def get_meta(self) -> WorkerMeta:
-        """Returns the collected metadata for this worker."""
-        cls = self.__class__
-        meta = cls._atlas_meta
-        if hasattr(cls, "_atlas_requirements"):
-            for req in cls._atlas_requirements:
-                if req not in meta.requirements:
-                    meta.requirements.append(req)
-        return meta
+        return self.__class__._atlas_meta
 
     def generate_manifest(self) -> Dict[str, Any]:
-        """
-        Auto-generates a Worker Manifest dictionary from the class metadata
-        and decorators. This can be written to a atlas.yaml file.
-        """
         meta = self.get_meta()
         cls = self.__class__
 
-        manifest = {
-            "id": cls._worker_id or f"atlas.worker.{cls.__name__.lower()}",
-            "name": cls._worker_name or cls.__name__,
+        return {
+            "id": cls._worker_id,
+            "name": cls.__name__,
             "version": cls._worker_version,
             "language": "python",
             "roles": cls._worker_roles or ["worker"],
@@ -261,13 +191,22 @@ class WorkerBase(ABC):
                 }
                 for cap in meta.capabilities
             ],
-            "translations": [],
         }
-        return manifest
 
     def write_manifest(self, path: str = "atlas.yaml") -> str:
-        """Generates and writes the manifest to a YAML file."""
-        manifest = self.generate_manifest()
         with open(path, "w") as f:
-            yaml.dump(manifest, f, default_flow_style=False, sort_keys=False)
+            yaml.dump(self.generate_manifest(), f, default_flow_style=False, sort_keys=False)
         return path
+
+# Keep backwards compatibility aliases for now, to not break absolutely everything simultaneously.
+WorkerBase = Worker
+def capability(*args, **kwargs):
+    def decorator(func):
+        return action(func)
+    return decorator
+def on_invocation(*args, **kwargs):
+    def decorator(func):
+        return action(func)
+    return decorator
+def require(*args, **kwargs):
+    return lambda t: t
