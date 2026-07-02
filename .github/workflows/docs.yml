@@ -26,6 +26,11 @@ jobs:
       - name: Install MkDocs and Material theme
         run: pip install mkdocs mkdocs-material
 
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
