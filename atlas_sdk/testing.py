@@ -41,8 +41,12 @@ class MockDependencyProxy:
                         target_id = registered_id
                         break
             
+            import inspect
             payload = kwargs
-            return self._runtime.invoke(target_id, name, payload)
+            res = self._runtime.invoke(target_id, name, payload)
+            if inspect.isawaitable(res):
+                return await res
+            return res
         return _async_rpc_caller
 
 
