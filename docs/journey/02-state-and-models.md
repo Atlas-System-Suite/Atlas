@@ -55,9 +55,12 @@ When a Worker emits data, the Atlas SDK intercepts the memory object, serializes
 
 ### Defining the Schema
 
-Models are defined in the `atlas.yaml` manifest. They use a strict, strongly-typed schema definition language. 
+Models are defined in YAML manifests. You have two options for where to write your Model configuration:
 
-Let's define a Model for our Notes:
+1. **Option A: Same File (Multi-Document YAML)**: Append the model definition directly to your `notes_ui/atlas.yaml` file, separating it from the worker definition with a triple dash (`---`).
+2. **Option B: Separate File (Recommended)**: Create a new file named `note.yaml` (typically under a `models/` directory, e.g., `models/note.yaml`) to keep the worker configuration and model schema clean and independent.
+
+Let's define a Model for our Notes (e.g. creating `models/note.yaml`):
 
 ```yaml
 kind: model
@@ -71,13 +74,20 @@ schema:
   tags: list[string]
 ```
 
-When you run `atlas build`, Solon (the Atlas compiler) will read this YAML file and auto-generate the native language bindings for every Worker in your workspace. 
+Let's break down this Model Manifest:
+- `kind: model`: Tells Solon that this is a data schema contract, not an executable worker.
+- `id: myapp.models.note`: The unique identifier for this model, used by other workers when import/export schemas are negotiated.
+- `schema`: Defines the fields and types. Here, a Note has a string `id`, string `content`, 64-bit integer `timestamp`, and a list of strings called `tags`.
 
-For the Python UI Worker, it generates a Pydantic class. For the Rust Storage Worker, it generates a Serde-derived struct.
+When you run `atlas build`, Solon (the Atlas compiler) reads this YAML file and auto-generates the native language bindings for every Worker in your workspace. For the Python UI Worker, it generates a Pydantic class. For a Rust Storage Worker, it would generate a Serde-derived struct.
+
+---
 
 ### Utilizing the Model in Code
 
-Now, let's update our `NotesUiWorker` to use the standard Storage capability, rather than an internal python list.
+Now, let's update our `NotesUiWorker` to use the standard Storage capability, rather than an internal Python list.
+
+Open `worker.py` and replace its contents with:
 
 ```python
 import uuid
@@ -123,6 +133,55 @@ class NotesUiWorker(WorkerBase):
         
         return "Note perfectly saved across the boundary!"
 ```
+
+### Code & YAML Deep Dive
+
+Let's trace how the **Worker**, **Model**, and **YAML Manifests** connect together:
+
+#### 1. The Python Worker Code (`worker.py`)
+- **Imports**: `from myapp.models import Note` loads the Pydantic-based Model class that Solon generated from our `note.yaml` schema.
+- **`@require("atlas.core.storage", ... as_alias="db")`**: Declares that this worker needs an external storage provider. The SDK automatically resolves this and injects a capability proxy object named `self.db` before `on_init()` runs.
+- **`Note(...)`**: Instantiates the strongly-typed data contract. This prevents runtime typos or missing properties when passing data.
+- **`await self.db.write(new_note.id, note_data)`**: Invokes the `write` capability on our proxy, pushing the serialized data through the network tunnel.
+
+#### 2. The Worker's Manifest (`atlas.yaml`)
+To make this code work, we must update the worker's `atlas.yaml` to declare this import dependency:
+```yaml
+kind: worker
+id: myapp.notes_ui
+name: NotesUiWorker
+version: 1.0.0
+description: An Atlas Project
+language: python
+roles: [worker]
+
+execution:
+  policy: singleton
+
+communication:
+  transports: [memory]
+  formats: [python]
+  default_format: python
+
+# Declares the required storage capability so the runtime can route self.db
+imports:
+  - capability: atlas.core.storage
+    version: ^1.0.0
+    optional: false
+    reason: Required for notes database storage
+
+exports:
+  - capability: myapp.notes.add
+    version: 1.0.0
+
+translations: []
+```
+
+Here:
+- `imports`: Declares that the runtime must bind a provider of the `"atlas.core.storage"` capability to our worker. This is what enables `self.db` to work under the hood!
+- `exports`: Tells the runtime that this worker provides `"myapp.notes.add"`, meaning other workers in the system can call our `add` capability.
+
+---
 
 ### The Invisible Serialization Engine
 
