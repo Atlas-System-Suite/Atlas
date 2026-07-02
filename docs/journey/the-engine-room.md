@@ -2,7 +2,7 @@
 
 Atlas is designed to feel like magic to the developer, but under the hood, it is an extremely rigid, deterministic, and highly-engineered system.
 
-In this masterclass, we will completely pull apart the Atlas Runtime. We will observe the exact sequence of operations from the moment the process starts, to the moment a packet is deserialized by a Worker. This document contains architectural pseudocode that mirrors the actual Rust implementation of the Atlas Core.
+In this masterclass, we will completely pull apart the Atlas Runtime. We will observe the exact sequence of operations from the moment the process starts, to the moment a packet is deserialized by a Worker. This document contains architectural spec pseudocode (represented in Rust) that mirrors the behavior of the Python reference implementation of the Atlas Core.
 
 By the end of this document, you will understand the architecture deeply enough to write your own Atlas runtime from scratch.
 
@@ -33,7 +33,7 @@ When you run `solon run` or start the Atlas daemon, the absolute first thing the
 
 ### The Bootstrapper Algorithm
 
-The Runtime Bootstrapper performs a topological sort on the capabilities requested in the YAML file. Here is the conceptual Rust code for how Atlas builds the Registry:
+The Runtime Bootstrapper performs a topological sort on the capabilities requested in the YAML file. Here is the conceptual spec code (represented in Rust) for how Atlas builds the Registry:
 
 ```rust
 // Core/src/bootstrapper.rs

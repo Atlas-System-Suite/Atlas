@@ -179,7 +179,7 @@ translations: []
 
 Why do we need a YAML file if the Python code already has the `@capability` decorator?
 
-Because Atlas is **language agnostic**. The core Runtime (which orchestrates the workers) is written in Rust. It cannot read your Python decorators. The `atlas.yaml` manifest serves as a universal, language-independent specification that the Runtime reads *before* allocating any memory to the Python VM. It allows the Runtime to understand the shape of your application instantly, without needing to boot up expensive language runtimes just to map the network.
+Because Atlas is **language agnostic**. Although the core reference Runtime in this repository is implemented in Python (to be ported to Rust/native binaries in the future), the design separates the runtime's orchestration from the language-specific workers. It cannot read your Python decorators directly. The `atlas.yaml` manifest serves as a universal, language-independent specification that the Runtime reads *before* loading any worker code. It allows the Runtime to understand the shape of your application instantly, without needing to boot up the worker's language runtime just to map the capability network.
 
 ---
 
