@@ -105,6 +105,21 @@ class NotesUiWorker(WorkerBase):
         return f"Hello, {name}! From NotesUiWorker."
 ```
 
+#### Detailed Breakdown of Boilerplate Code:
+* **`WorkerBase`**: The base class for all Atlas Python workers. Inheriting from it configures metaclasses that collect decorator annotations at import time.
+* **Metadata Fields (`_worker_id`, `_worker_name`, etc.)**:
+  - `_worker_id`: The global unique ID for this worker instance (e.g. `"myapp.notes_ui"`).
+  - `_worker_roles`: Tags that describe this worker's responsibility (e.g., `["worker"]` or `["app"]`).
+* **Lifecycle Hooks**:
+  - `on_init()`: Invoked by the runtime immediately after instantiation. This is where you allocate in-memory state.
+  - `on_start()`: Invoked when the runtime finishes resolving all bindings and boots the worker loop.
+  - `on_stop()`: Invoked during a graceful shutdown. This is where you close any open connections or files.
+* **Capability Routing**:
+  - `@capability("myapp.notes_ui.hello", version="1.0.0")`: Declares that this worker implements the specific capability contract `"myapp.notes_ui.hello"` at version `1.0.0`.
+  - `@on_invocation("hello")`: Tells the SDK to route any incoming requests targeting the `"hello"` action to this Python method.
+
+---
+
 ### Implementing our Business Logic
 
 Let's modify this boilerplate to implement our Note-taking application.
@@ -132,6 +147,10 @@ class NotesUiWorker(WorkerBase):
         self.notes.append(note_text)
         return f"Note added! Total notes: {len(self.notes)}"
 ```
+
+#### How this logic functions:
+* **`self.notes = []`**: Initializes a simple in-memory list on this specific worker instance.
+* **`add(self, note_text: str)`**: This method will be invoked when a caller requests the `myapp.notes.add` capability. It accepts a `note_text` string, appends it to our state, and returns a confirmation string.
 
 Why is it written this way?
 
@@ -177,6 +196,16 @@ exports:
 translations: []
 ```
 
+#### Detailed Breakdown of the YAML Manifest:
+* **`kind: worker`**: Identifies this file as a Worker specification.
+* **`id: myapp.notes_ui`**: Matches the `_worker_id` string in our Python file, allowing the Runtime to pair this manifest with the Python class.
+* **`execution`**:
+  - `policy: singleton`: Tells the Runtime that only one instance of this worker should be spawned per Room.
+* **`communication`**:
+  - `transports: [memory]`: The underlying communication protocol. Memory transport is fast and keeps the worker in-process.
+  - `formats: [python]`: The data serialization format used (in this case, native Python structures).
+* **`exports`**: Lists the capabilities this worker makes available to other workers. This must match the `@capability` decorators in your code.
+
 Why do we need a YAML file if the Python code already has the `@capability` decorator?
 
 Because Atlas is **language agnostic**. Although the core reference Runtime in this repository is implemented in Python (to be ported to Rust/native binaries in the future), the design separates the runtime's orchestration from the language-specific workers. It cannot read your Python decorators directly. The `atlas.yaml` manifest serves as a universal, language-independent specification that the Runtime reads *before* loading any worker code. It allows the Runtime to understand the shape of your application instantly, without needing to boot up the worker's language runtime just to map the capability network.
@@ -205,6 +234,11 @@ def test_add_note():
 
     assert "Total notes: 1" in result
 ```
+
+#### Detailed Breakdown of the Test Code:
+* **`MockRuntime`**: A lightweight, pure-Python class that simulates the Atlas invocation loop in-memory, without opening real network sockets or spin-locking threads.
+* **`runtime.register(NotesUiWorker, "myapp.notes_ui")`**: Instantiates and binds our worker to a mock address, just like the real Runtime bootloader would.
+* **`runtime.invoke("myapp.notes_ui", "add", ...)`**: Simulates an invocation. The first parameter is the **Worker ID** (`"myapp.notes_ui"`), the second is the action name (`"add"`), and the third is the payload dictionary matching the method signature.
 
 Run the tests:
 
