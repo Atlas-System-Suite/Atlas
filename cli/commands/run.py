@@ -7,6 +7,7 @@ atlas run — Run an Atlas application.
 import yaml
 import os
 import sys
+import zipfile
 
 
 def handle_run(args):
@@ -17,10 +18,27 @@ def handle_run(args):
         console.print("   Are you in an Atlas project directory?")
         sys.exit(1)
 
-    with open(manifest_path, "r") as f:
-        manifest = yaml.safe_load(f)
+    # 1. Load the manifest (handle standard YAML or binary .atlas ZIP package)
+    if manifest_path.endswith(".atlas"):
+        try:
+            with zipfile.ZipFile(manifest_path, 'r') as zf:
+                if "atlas.yaml" not in zf.namelist():
+                    console.print(f"[bold red]❌ Manifest 'atlas.yaml' not found inside package:[/bold red] {manifest_path}")
+                    sys.exit(1)
+                manifest_content = zf.read("atlas.yaml").decode("utf-8")
+                manifest = yaml.safe_load(manifest_content)
+        except Exception as e:
+            console.print(f"[bold red]❌ Failed to read package file:[/bold red] {e}")
+            sys.exit(1)
+    else:
+        try:
+            with open(manifest_path, "r", encoding="utf-8") as f:
+                manifest = yaml.safe_load(f)
+        except Exception as e:
+            console.print(f"[bold red]❌ Failed to parse manifest YAML:[/bold red] {e}")
+            sys.exit(1)
 
-    # Resolve worker or manager name
+    # 2. Resolve worker or manager name
     worker_name = manifest.get("name")
     if not worker_name:
         if "manager" in manifest and isinstance(manifest["manager"], dict):
